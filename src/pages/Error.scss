@@ -1,0 +1,22 @@
+#container-page-error {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2rem;
+	flex-grow: 1;
+
+	>h1 {
+		font-size: 2rem;
+	}
+
+	>p {
+		font-size: 1rem;
+		text-align: center;
+		line-height: 2;
+	}
+
+	>svg {
+		font-size: 6rem;
+	}
+}
