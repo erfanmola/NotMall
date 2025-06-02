@@ -3,6 +3,7 @@ import { isRouteErrorResponse, useRouteError } from "react-router";
 import LayoutRoot from "./layouts/Root";
 import PageError from "./pages/Error";
 import PageHome from "./pages/Home";
+import PageProfile from "./pages/Profile";
 import { createBrowserRouter } from "react-router";
 
 const ErrorFallback = () => {
@@ -29,6 +30,11 @@ export const router = createBrowserRouter([
 			{
 				index: true,
 				Component: PageHome,
+			},
+			{
+				index: true,
+				path: "/profile",
+				Component: PageProfile,
 			},
 		],
 	},
