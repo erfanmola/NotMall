@@ -1,0 +1,10 @@
+#container-bottom-bar {
+	flex-shrink: 0;
+	padding-bottom: calc(var(--tg-viewport-safe-area-inset-bottom) + var(--tg-viewport-content-safe-area-inset-bottom));
+	background-color: red;
+
+	>div {
+		display: flex;
+		background-color: blue;
+	}
+}
