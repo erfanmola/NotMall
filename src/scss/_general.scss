@@ -10,6 +10,7 @@
 	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
+	line-height: normal;
 }
 
 :root {
@@ -22,7 +23,7 @@
 html:dir(ltr),
 body:dir(ltr) {
 	font-family:
-		Inter,
+		'SF Pro Display',
 		-apple-system,
 		BlinkMacSystemFont,
 		Segoe UI,
@@ -69,4 +70,14 @@ button,
 i,
 svg {
 	touch-action: none;
+}
+
+div[class*="shimmer"] {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+main {
+	flex-grow: 1;
+	overflow: hidden;
 }

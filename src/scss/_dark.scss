@@ -1,0 +1,6 @@
+body[data-theme="dark"] {
+	.shimmer {
+		background: linear-gradient(to right, rgba(255, 255, 255, 0.05) 8%, rgba(255, 255, 255, 0.1) 18%, rgba(255, 255, 255, 0.05) 33%);
+		background-size: 1000px 100%;
+	}
+}
