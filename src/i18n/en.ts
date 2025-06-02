@@ -1,6 +1,12 @@
 const translation = {
 	general: {
 		title: "Not Mall",
+		search: "Search",
+		cancel: "Cancel",
+		ok: "Ok",
+	},
+	bottombar: {
+		store: "Store",
 	},
 	pages: {
 		error: {
@@ -11,6 +17,35 @@ const translation = {
 			title: "Invalid Environment",
 			description:
 				"This app is designed to run in Telegram Mini Apps environment.",
+		},
+		profile: {
+			history: "History",
+			noHistory: {
+				title: "No history yet",
+				description: "Let's change that",
+			},
+		},
+		home: {
+			search: {
+				notFound: {
+					title: "Not Found",
+					description: "This style doesn't exist",
+				},
+			},
+		},
+		single: {
+			inStock: "{{count}} left",
+			addToCart: "Add to cart",
+			buyNow: "Buy now",
+			buyFor: "Buy for {{price}} {{currency}}",
+		},
+	},
+	modals: {
+		cart: {
+			noItems: {
+				title: "Cart's cold",
+				description: "No items yet",
+			},
 		},
 	},
 };
