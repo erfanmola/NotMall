@@ -9,11 +9,7 @@ import {
 	useLaunchParams,
 	viewport,
 } from "@telegram-apps/sdk-react";
-import {
-	invokeHapticFeedbackImpact,
-	isVersionAtLeast,
-	postEvent,
-} from "./utils/telegram";
+import { isVersionAtLeast, postEvent } from "./utils/telegram";
 
 import PageError from "./pages/Error";
 import { RouterProvider } from "react-router";
@@ -115,8 +111,6 @@ const App = () => {
 					postEvent("web_app_request_fullscreen");
 				}
 			}
-
-			invokeHapticFeedbackImpact("heavy");
 		};
 
 		useEffect(() => {
