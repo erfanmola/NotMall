@@ -1,10 +1,47 @@
 #container-bottom-bar {
 	flex-shrink: 0;
 	padding-bottom: calc(var(--tg-viewport-safe-area-inset-bottom) + var(--tg-viewport-content-safe-area-inset-bottom));
-	background-color: red;
 
 	>div {
 		display: flex;
-		background-color: blue;
+		justify-content: space-around;
+		padding: 0.125rem 1rem;
+
+		>a {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			text-align: center;
+			gap: 0.125rem;
+			opacity: 0.5;
+			padding: 0 2rem;
+
+			&.active {
+				opacity: 1;
+			}
+
+			>div {
+				width: 1.5rem;
+				height: 1.5rem;
+				border-radius: 50%;
+				overflow: hidden;
+				margin: 0.3125rem 0 0.1875rem;
+
+				>svg,
+				>div {
+					width: 100%;
+					height: 100%;
+					border-radius: inherit;
+					overflow: hidden;
+				}
+			}
+
+			>span {
+				font-size: 0.675rem;
+				line-height: 0.75rem;
+				font-weight: 500;
+			}
+		}
 	}
 }
