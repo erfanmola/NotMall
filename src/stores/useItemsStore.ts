@@ -1,6 +1,7 @@
 // stores/useItemsStore.ts
 import { create } from "zustand";
 import { requestAPI } from "../utils/api";
+import { simulateDelay } from "./useSettingsStore";
 
 export type Item = {
 	id: number;
@@ -17,14 +18,20 @@ export type Item = {
 type ItemsState = {
 	items: Item[] | null;
 	fetchItems: () => Promise<void>;
+	loading: boolean;
 };
 
 export const useItemsStore = create<ItemsState>((set) => ({
 	items: null,
+	loading: true,
 	fetchItems: async () => {
 		const data = await requestAPI("/items.json", {}, "GET");
-		if (data) {
-			set({ items: data });
+		if (!simulateDelay) {
+			set({ items: data, loading: !data });
+		} else {
+			setTimeout(() => {
+				set({ items: data, loading: !data });
+			}, simulateDelay);
 		}
 	},
 }));
