@@ -11,6 +11,7 @@
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	line-height: normal;
+	overscroll-behavior: none;
 }
 
 :root {
@@ -49,7 +50,7 @@ body,
 }
 
 body {
-	background-color: var(--tg-bg-color);
+	background-color: var(--bg-color);
 
 	&[data-theme=light] {
 		color: #000000;
@@ -78,6 +79,10 @@ div[class*="shimmer"] {
 }
 
 main {
+	display: flex;
+	flex-direction: column;
 	flex-grow: 1;
+	max-height: 100%;
+	width: 100%;
 	overflow: hidden;
 }
