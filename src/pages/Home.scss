@@ -115,6 +115,10 @@
 							opacity: 1;
 							transition: width .25s opacity .25s;
 						}
+
+						&:not(.active) {
+							backdrop-filter: blur(20px);
+						}
 					}
 				}
 			}
