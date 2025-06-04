@@ -14,6 +14,7 @@
 		"@gsap/react": "^2.1.2",
 		"@million/lint": "^1.0.14",
 		"@telegram-apps/sdk-react": "^3.3.0",
+		"@tonconnect/sdk": "^3.1.0",
 		"animate.css": "^4.1.1",
 		"i18next": "^25.2.1",
 		"lottie-web": "^5.13.0",
@@ -24,8 +25,9 @@
 		"react-modal-sheet": "^4.4.0",
 		"react-router": "^7.6.2",
 		"react-shimmer-effects": "^1.0.4",
-		"react-simply-carousel": "^9.1.11",
+		"react-slot-counter": "^3.3.1",
 		"react-virtuoso": "^4.12.8",
+		"swiper": "^11.2.8",
 		"zustand": "^5.0.5"
 	},
 	"devDependencies": {
