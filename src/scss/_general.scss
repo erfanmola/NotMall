@@ -51,14 +51,7 @@ body,
 
 body {
 	background-color: var(--bg-color);
-
-	&[data-theme=light] {
-		color: #000000;
-	}
-
-	&[data-theme=dark] {
-		color: #ffffff;
-	}
+	color: var(--text-color);
 }
 
 ul,
@@ -85,4 +78,9 @@ main {
 	max-height: 100%;
 	width: 100%;
 	overflow: hidden;
+	position: relative;
+}
+
+.swiper {
+	z-index: 0;
 }
