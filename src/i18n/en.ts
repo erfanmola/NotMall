@@ -33,11 +33,12 @@ const translation = {
 				},
 			},
 		},
-		single: {
-			inStock: "{{count}} left",
+		product: {
+			inStock: "left",
 			addToCart: "Add to cart",
 			buyNow: "Buy now",
 			buyFor: "Buy for {{price}} {{currency}}",
+			share: "Have a big 🍆? Check this out!",
 		},
 	},
 	modals: {
