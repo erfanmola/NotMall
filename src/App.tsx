@@ -11,10 +11,13 @@ import {
 } from "@telegram-apps/sdk-react";
 import { isVersionAtLeast, postEvent } from "./utils/telegram";
 
+import { Flip } from "gsap/all";
 import PageError from "./pages/Error";
 import { RouterProvider } from "react-router";
+import gsap from "gsap";
 import { router } from "./router";
 import { useEffect } from "react";
+import { useGSAP } from "@gsap/react";
 import { useTranslation } from "react-i18next";
 
 const handleTheme = (isDark: boolean) => {
@@ -112,6 +115,8 @@ const App = () => {
 				}
 			}
 		};
+
+		gsap.registerPlugin(useGSAP, Flip);
 
 		useEffect(() => {
 			initializeTMA();

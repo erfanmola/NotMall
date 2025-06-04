@@ -1,9 +1,14 @@
 import "./ImageLoader.scss";
-import { useEffect, useRef, useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC, type Ref } from "react";
 import { ShimmerThumbnail } from "react-shimmer-effects";
 import { simulateDelay } from "../stores/useSettingsStore";
 
-const ImageLoader: FC<{ src: string }> = ({ src }) => {
+const ImageLoader: FC<{
+	src: string;
+	ref?: Ref<HTMLDivElement>;
+	containerAttrs?: React.HTMLAttributes<HTMLDivElement>;
+	imageAttrs?: React.ImgHTMLAttributes<HTMLImageElement>;
+}> = (props) => {
 	const imgRef = useRef<HTMLImageElement>(null);
 	const [loaded, setLoaded] = useState<boolean | null>(null);
 
@@ -27,12 +32,16 @@ const ImageLoader: FC<{ src: string }> = ({ src }) => {
 		return () => {
 			img.removeEventListener("load", handleLoad);
 		};
-	}, [src]);
+	}, [props.src]);
 
 	return (
-		<div className="image-loader">
+		<div
+			{...props.containerAttrs}
+			className={`image-loader ${props.containerAttrs?.className ?? ""}`}
+			ref={props.ref}
+		>
 			{loaded === false && <ShimmerThumbnail />}
-			<img ref={imgRef} src={src} />
+			<img ref={imgRef} src={props.src} {...props.imageAttrs} />
 		</div>
 	);
 };

@@ -3,6 +3,7 @@ import { isRouteErrorResponse, useRouteError } from "react-router";
 import LayoutRoot from "./layouts/Root";
 import PageError from "./pages/Error";
 import PageHome from "./pages/Home";
+import PageProduct from "./pages/Product";
 import PageProfile from "./pages/Profile";
 import { createBrowserRouter } from "react-router";
 
@@ -35,6 +36,11 @@ export const router = createBrowserRouter([
 				index: true,
 				path: "/profile",
 				Component: PageProfile,
+			},
+			{
+				index: true,
+				path: "/product/:id",
+				Component: PageProduct,
 			},
 		],
 	},

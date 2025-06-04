@@ -1,5 +1,6 @@
 import "./Profile.scss";
 
+import BottomBar from "../components/BottomBar";
 import { invokeHapticFeedbackImpact } from "../utils/telegram";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,6 +17,8 @@ const PageProfile = () => {
 			<header>
 				<h1>{t("general.title")}</h1>
 			</header>
+
+			<BottomBar />
 		</div>
 	);
 };
