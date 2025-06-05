@@ -3,7 +3,7 @@ const translation = {
 		title: "Not Mall",
 		search: "Search",
 		cancel: "Cancel",
-		ok: "Ok",
+		ok: "OK",
 	},
 	bottombar: {
 		store: "Store",
@@ -43,8 +43,9 @@ const translation = {
 	},
 	modals: {
 		cart: {
+			title: "Cart",
 			noItems: {
-				title: "Cart's cold",
+				title: "Cart’s cold",
 				description: "No items yet",
 			},
 		},
