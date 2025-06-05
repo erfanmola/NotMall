@@ -36,7 +36,7 @@ export default defineConfig((config) => {
 								"ol",
 								"svg",
 							],
-							greedy: [/container-/, /shimmer/, /html/, /body/],
+							greedy: [/container-/, /shimmer/, /html/, /body/, /swiper/],
 						},
 						defaultExtractor: (content) =>
 							content.match(/[\w-/:]+(?<!:)/g) || [],
