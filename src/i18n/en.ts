@@ -32,6 +32,10 @@ const translation = {
 					description: "This style doesn't exist",
 				},
 			},
+			notFound: {
+				title: "No Items Found",
+				description: "We don't sell shit at the moment",
+			},
 		},
 		product: {
 			inStock: "left",
