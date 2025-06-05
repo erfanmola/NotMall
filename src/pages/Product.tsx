@@ -27,6 +27,7 @@ import {
 } from "react-shimmer-effects";
 import { useCartStore } from "../stores/useCartStore";
 import SlotCounter from "react-slot-counter";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const priceSymbols: Record<string, string> = {
 	not: "$NOT",
@@ -261,14 +262,18 @@ export const Product: FC<ProductProps> = ({
 					>
 						{cart[item.id] ? (
 							<div>
-								<button onClick={onClickDecrement}>-</button>
+								<button onClick={onClickDecrement}>
+									<FaMinus />
+								</button>
 								<SlotCounter
 									autoAnimationStart={false}
 									value={cart[item.id]}
 									duration={0.125 * motionMultiplier}
 									sequentialAnimationMode
 								/>
-								<button onClick={onClickIncrement}>+</button>
+								<button onClick={onClickIncrement}>
+									<FaPlus />
+								</button>
 							</div>
 						) : (
 							<span>{t("pages.product.addToCart")}</span>

@@ -20,6 +20,7 @@
 	position: absolute;
 	inset: 0;
 	transition: background-color 0.25s;
+	z-index: 10001;
 
 	&.standalone {
 		transition: background-color 0s;
@@ -121,9 +122,10 @@
 				height: 100%;
 				aspect-ratio: 1/1;
 				overflow: hidden;
+				border: 0.0625rem solid transparent;
 
 				&.active {
-					border: 0.0625rem solid var(--text-color);
+					border-color: var(--text-color);
 				}
 			}
 		}
@@ -133,11 +135,12 @@
 #container-lightbox {
 	content: '';
 	position: fixed;
-	z-index: 10;
+	z-index: 10002;
 	inset: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(var(--bg-color-rgb), 0.875);
+	background-color: rgba(var(--black-rgb), 0.7);
+	backdrop-filter: blur(8px);
 	cursor: pointer;
 	padding: 1rem;
 	display: flex;
@@ -163,6 +166,7 @@
 	display: flex;
 	justify-content: space-between;
 	gap: 0.75rem;
+	background-color: var(--bg-color);
 
 	>div {
 		display: flex;
@@ -198,6 +202,14 @@
 		&.primary {
 			background-color: rgba(var(--text-color-rgb), 1);
 			color: var(--bg-color);
+
+			&:not(.disabled) {
+
+				&:focus,
+				&:active {
+					opacity: 0.75;
+				}
+			}
 		}
 	}
 }
@@ -345,6 +357,9 @@
 			font-size: 1.25rem;
 			line-height: 1.5rem;
 			font: 500;
+			justify-content: center;
+			text-align: center;
+			min-width: 1.5rem;
 		}
 
 		>button {
@@ -353,9 +368,13 @@
 			font-size: 1.5rem;
 			line-height: normal;
 			font-weight: 500;
-			padding: 0.425rem 1.125rem;
+			padding: 0.425rem 1rem;
 			touch-action: none;
 			cursor: pointer;
+
+			>svg {
+				height: 1.125rem;
+			}
 		}
 	}
 }
