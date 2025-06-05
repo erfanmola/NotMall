@@ -36,7 +36,14 @@ export default defineConfig((config) => {
 								"ol",
 								"svg",
 							],
-							greedy: [/container-/, /shimmer/, /html/, /body/, /swiper/],
+							greedy: [
+								/container-/,
+								/shimmer/,
+								/html/,
+								/body/,
+								/swiper/,
+								/react-modal-sheet/,
+							],
 						},
 						defaultExtractor: (content) =>
 							content.match(/[\w-/:]+(?<!:)/g) || [],
