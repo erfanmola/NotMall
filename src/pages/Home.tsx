@@ -8,7 +8,9 @@ import {
 	useMemo,
 	useRef,
 	useState,
+	type Dispatch,
 	type FC,
+	type SetStateAction,
 } from "react";
 import { useItemsStore, type Item } from "../stores/useItemsStore";
 import { useTranslation } from "react-i18next";
@@ -24,6 +26,9 @@ import { motionMultiplier } from "../stores/useSettingsStore";
 import BottomBar from "../components/BottomBar";
 import { Pagination } from "swiper/modules";
 import { useCartStore } from "../stores/useCartStore";
+import { Sheet } from "react-modal-sheet";
+import { FaCheck, FaMinus } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 
 const Item: FC<{ item: Item }> = ({ item }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -31,7 +36,7 @@ const Item: FC<{ item: Item }> = ({ item }) => {
 	const carouselImageRef = useRef<HTMLDivElement>(null);
 	const [portal, setPortal] = useState(false);
 	const [activeSlide, setActiveSlide] = useState(
-		Math.floor(Math.random() * item.images.length),
+		(item.id - 1) % item.images.length,
 	);
 	const { cart } = useCartStore();
 
@@ -87,9 +92,12 @@ const Item: FC<{ item: Item }> = ({ item }) => {
 		setPortal(false);
 	}, []);
 
-	const onSlideChange = useCallback((swiper: any) => {
-		setActiveSlide(swiper.activeIndex);
-	}, []);
+	const onSlideChange = useCallback(
+		(swiper: any) => {
+			setActiveSlide(swiper.realIndex);
+		},
+		[setActiveSlide],
+	);
 
 	return (
 		<>
@@ -111,6 +119,7 @@ const Item: FC<{ item: Item }> = ({ item }) => {
 							modules={[Pagination]}
 							initialSlide={activeSlide}
 							onSlideChange={onSlideChange}
+							loop
 						>
 							{item.images.map((image, index) => (
 								<SwiperSlide key={index}>
@@ -128,7 +137,11 @@ const Item: FC<{ item: Item }> = ({ item }) => {
 					</div>
 				</div>
 
-				{cart[item.id] && <span className="badge-in-cart">✓</span>}
+				{cart[item.id] && (
+					<span className="badge-in-cart">
+						<FaCheck />
+					</span>
+				)}
 			</div>
 
 			{portal &&
@@ -193,15 +206,118 @@ const ItemsError = () => {
 	return <>Ooops</>;
 };
 
+const CartModal: FC<{
+	isOpen: boolean;
+	setOpen: Dispatch<SetStateAction<boolean>>;
+}> = ({ isOpen, setOpen }) => {
+	const { cart, remove } = useCartStore();
+	const { t } = useTranslation();
+	const { items } = useItemsStore();
+
+	return (
+		<Sheet
+			isOpen={isOpen}
+			onClose={() => setOpen(false)}
+			detent="content-height"
+		>
+			<Sheet.Container>
+				{Object.keys(cart).length > 0 ? (
+					<Sheet.Content className="container-modal-cart">
+						<span
+							className="btn-close-modal"
+							onClick={() => {
+								invokeHapticFeedbackImpact("light");
+								setOpen(false);
+							}}
+						>
+							<IoClose />
+						</span>
+
+						<div>
+							<header>
+								<h2>{t("modals.cart.title")}</h2>
+							</header>
+
+							<div>
+								{Object.entries(cart).map(([productId, quantity]) => {
+									const item = items?.find(
+										(i) => i.id === Number.parseInt(productId),
+									);
+									if (!item) return;
+
+									return (
+										<div>
+											<ImageLoader src={item.images[0]} />
+
+											<div>
+												<span>{item.category}</span>
+												<h3>{item.name}</h3>
+											</div>
+
+											<span>
+												{quantity > 1 && (
+													<span>
+														{quantity} <IoClose />
+													</span>
+												)}
+												{item.price.toLocaleString()} {item.currency}
+											</span>
+
+											<span
+												onClick={() => {
+													invokeHapticFeedbackImpact("medium");
+													remove(item.id.toString());
+												}}
+											>
+												<FaMinus />
+											</span>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					</Sheet.Content>
+				) : (
+					<Sheet.Content className="container-modal-cart-empty">
+						<span
+							className="btn-close-modal"
+							onClick={() => {
+								invokeHapticFeedbackImpact("light");
+								setOpen(false);
+							}}
+						>
+							<IoClose />
+						</span>
+
+						<div>
+							<h2>{t("modals.cart.noItems.title")}</h2>
+							<span>{t("modals.cart.noItems.description")}</span>
+						</div>
+
+						<div id="container-action-buttons" style={{ paddingTop: "0" }}>
+							<div
+								className="primary"
+								onClick={() => {
+									invokeHapticFeedbackImpact("light");
+									setOpen(false);
+								}}
+							>
+								<span>{t("general.ok")}</span>
+							</div>
+						</div>
+					</Sheet.Content>
+				)}
+			</Sheet.Container>
+			<Sheet.Backdrop onTap={() => setOpen(false)} />
+		</Sheet>
+	);
+};
+
 const PageHome = () => {
 	const { t } = useTranslation();
 	const { items, loading, fetchItems } = useItemsStore();
 	const { cart } = useCartStore();
-
-	const onClickButtonBuy = useCallback(() => {
-		// TODO: Implement this
-		console.log("Ok");
-	}, []);
+	const [cartModal, setCartModal] = useState(false);
 
 	const onClickButtonSearch = useCallback(() => {
 		// TODO: Implement this
@@ -209,9 +325,10 @@ const PageHome = () => {
 	}, []);
 
 	const onClickButtonCart = useCallback(() => {
-		// TODO: Implement this
-		console.log("Ok");
-	}, []);
+		if (!items) return;
+		invokeHapticFeedbackImpact("light");
+		setCartModal(true);
+	}, [items]);
 
 	const totalPrice = useMemo(() => {
 		if (!items) return 0;
@@ -220,6 +337,11 @@ const PageHome = () => {
 			0,
 		);
 	}, [cart, items]);
+
+	const onClickButtonBuy = useCallback(() => {
+		// TODO: Implement this
+		console.log("Ok");
+	}, []);
 
 	useEffect(() => {
 		if (!items) {
@@ -230,50 +352,53 @@ const PageHome = () => {
 	}, []);
 
 	return (
-		<div id="container-page-home">
-			<header>
-				<h1>{t("general.title")}</h1>
+		<>
+			<div id="container-page-home">
+				<header>
+					<h1>{t("general.title")}</h1>
 
-				<div>
-					<div onClick={onClickButtonSearch}>
-						<IconSearch />
+					<div>
+						<div onClick={onClickButtonSearch}>
+							<IconSearch />
+						</div>
+
+						<div onClick={onClickButtonCart}>
+							{Object.keys(cart).length > 0 ? (
+								<span>{Object.keys(cart).length}</span>
+							) : (
+								<IconBasket />
+							)}
+						</div>
 					</div>
+				</header>
 
-					<div onClick={onClickButtonCart}>
-						{Object.keys(cart).length > 0 ? (
-							<span>{Object.keys(cart).length}</span>
-						) : (
-							<IconBasket />
-						)}
-					</div>
-				</div>
-			</header>
+				<section>
+					{loading ? (
+						<ItemsShimmer />
+					) : items ? (
+						<Items items={items} />
+					) : (
+						<ItemsError />
+					)}
+				</section>
 
-			<section>
-				{loading ? (
-					<ItemsShimmer />
-				) : items ? (
-					<Items items={items} />
-				) : (
-					<ItemsError />
-				)}
-			</section>
-
-			{Object.keys(cart).length > 0 ? (
-				<div id="container-action-buttons" style={{ paddingTop: "0" }}>
-					<div className="primary" onClick={onClickButtonBuy}>
-						<span>
-							{t("pages.product.buyFor", {
-								price: totalPrice.toLocaleString(),
-								currency: "NOT",
-							})}
-						</span>
-					</div>
-				</div>
-			) : (
 				<BottomBar />
-			)}
-		</div>
+				{Object.keys(cart).length > 0 && (
+					<div id="container-action-buttons" className="container-buy-button">
+						<div className="primary" onClick={onClickButtonBuy}>
+							<span>
+								{t("pages.product.buyFor", {
+									price: totalPrice.toLocaleString(),
+									currency: "NOT",
+								})}
+							</span>
+						</div>
+					</div>
+				)}
+			</div>
+
+			<CartModal isOpen={cartModal} setOpen={setCartModal} />
+		</>
 	);
 };
 
