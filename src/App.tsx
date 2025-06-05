@@ -15,6 +15,7 @@ import { Flip } from "gsap/all";
 import PageError from "./pages/Error";
 import { RouterProvider } from "react-router";
 import gsap from "gsap";
+import { preloadLottieAnimations } from "./utils/preload";
 import { router } from "./router";
 import { useEffect } from "react";
 import { useGSAP } from "@gsap/react";
@@ -83,6 +84,25 @@ const App = () => {
 				bindThemeParamsCssVars();
 			}
 
+			setTimeout(() => {
+				const persistVariables = [
+					"tg-viewport-height",
+					"tg-viewport-safe-area-inset-top",
+					"tg-viewport-content-safe-area-inset-top",
+					"tg-viewport-safe-area-inset-bottom",
+					"tg-viewport-content-safe-area-inset-bottom",
+				];
+
+				for (const name of persistVariables) {
+					(document.querySelector(":root") as HTMLElement).style.setProperty(
+						`--p${name}`,
+						(
+							document.querySelector(":root") as HTMLElement
+						).style.getPropertyValue(`--${name}`),
+					);
+				}
+			});
+
 			if (isVersionAtLeast("6.1", lp.tgWebAppVersion)) {
 				postEvent("web_app_setup_settings_button", {
 					is_visible: false,
@@ -140,6 +160,10 @@ const App = () => {
 				}
 			};
 		}, []);
+
+		setTimeout(() => {
+			preloadLottieAnimations();
+		}, 5e3);
 
 		return <RouterProvider router={router} />;
 	}
