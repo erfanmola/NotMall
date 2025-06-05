@@ -1,6 +1,11 @@
 import "./Home.scss";
 
-import { IconBasket, IconSearch } from "../components/Icons";
+import {
+	IconBasket,
+	IconCloseCircle,
+	IconSearch,
+	IconSearchInput,
+} from "../components/Icons";
 
 import {
 	useCallback,
@@ -29,6 +34,8 @@ import { useCartStore } from "../stores/useCartStore";
 import { Sheet } from "react-modal-sheet";
 import { FaCheck, FaMinus } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import LottiePlayer from "../components/LottiePlayer";
+import { t } from "i18next";
 
 const Item: FC<{ item: Item }> = ({ item }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -157,31 +164,49 @@ const Item: FC<{ item: Item }> = ({ item }) => {
 	);
 };
 
-const Items: FC<{ items: Item[] }> = ({ items }) => {
-	if (items.length <= 12) {
+const Items: FC<{ items: Item[]; search?: boolean }> = ({ items, search }) => {
+	if (items.length === 0) {
 		return (
-			<div className="container-grid-items-home">
-				<div className="container-items-home">
-					{items.map((item, index) => (
-						<Item item={item} key={index} />
-					))}
-				</div>
+			<div className="container-grid-items-home-not-found">
+				<LottiePlayer src="/assets/lottie/chick.json" autoplay />
+				<h2>
+					{search
+						? t("pages.home.search.notFound.title")
+						: t("pages.home.notFound.title")}
+				</h2>
+				<span>
+					{search
+						? t("pages.home.search.notFound.description")
+						: t("pages.home.notFound.description")}
+				</span>
 			</div>
 		);
-	} else {
-		return (
-			<VirtuosoGrid
-				totalCount={items.length}
-				overscan={{
-					main: 2,
-					reverse: 2,
-				}}
-				className="container-grid-items-home"
-				listClassName="container-items-home"
-				itemContent={(index) => <Item item={items[index]} />}
-			/>
-		);
 	}
+
+	// if (items.length <= 12) {
+	// 	return (
+	// 		<div className="container-grid-items-home">
+	// 			<div className="container-items-home">
+	// 				{items.map((item, index) => (
+	// 					<Item item={item} key={index} />
+	// 				))}
+	// 			</div>
+	// 		</div>
+	// 	);
+	// } else {
+	return (
+		<VirtuosoGrid
+			totalCount={items.length}
+			overscan={{
+				main: 2,
+				reverse: 2,
+			}}
+			className="container-grid-items-home"
+			listClassName="container-items-home"
+			itemContent={(index) => <Item item={items[index]} />}
+		/>
+	);
+	// }
 };
 
 const ItemsShimmer = () => {
@@ -313,15 +338,89 @@ const CartModal: FC<{
 	);
 };
 
+const SearchBar: FC<{
+	query: string;
+	setQuery: Dispatch<SetStateAction<string>>;
+	setSearch: Dispatch<SetStateAction<boolean>>;
+}> = ({ query, setQuery, setSearch }) => {
+	const { t } = useTranslation();
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		if (!inputRef.current) return;
+		inputRef.current.focus();
+	}, [inputRef]);
+
+	return (
+		<div id="container-searchbar" className="animate__animated animate__fadeIn">
+			<label>
+				<IconSearchInput />
+
+				<input
+					ref={inputRef}
+					type="text"
+					value={query}
+					placeholder={t("general.search")}
+					onChange={(e) => {
+						setQuery(e.target.value);
+					}}
+					onKeyUp={(e) => {
+						if (e.key === "Enter") {
+							(e.target as HTMLInputElement).blur();
+						}
+					}}
+				/>
+
+				{query.length > 0 && (
+					<IconCloseCircle
+						onClick={() => {
+							invokeHapticFeedbackImpact("light");
+							setQuery("");
+						}}
+					/>
+				)}
+			</label>
+
+			<button
+				onClick={() => {
+					invokeHapticFeedbackImpact("light");
+					setQuery("");
+					setSearch(false);
+				}}
+			>
+				{t("general.cancel")}
+			</button>
+		</div>
+	);
+};
+
 const PageHome = () => {
 	const { t } = useTranslation();
 	const { items, loading, fetchItems } = useItemsStore();
 	const { cart } = useCartStore();
 	const [cartModal, setCartModal] = useState(false);
+	const [search, setSearch] = useState(false);
+	const [searchQuery, setSearchQuery] = useState("");
+
+	const itemsList = useMemo(() => {
+		if (!items) return items;
+
+		if (search && searchQuery.length > 0) {
+			return items.filter(
+				(item) =>
+					item.name.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1 ||
+					item.description.toLowerCase().indexOf(searchQuery.toLowerCase()) >
+						-1 ||
+					item.category.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1,
+			);
+		}
+
+		return items;
+	}, [items, searchQuery, searchQuery]);
 
 	const onClickButtonSearch = useCallback(() => {
-		// TODO: Implement this
-		console.log("Ok");
+		invokeHapticFeedbackImpact("light");
+		setSearch(true);
 	}, []);
 
 	const onClickButtonCart = useCallback(() => {
@@ -354,29 +453,37 @@ const PageHome = () => {
 	return (
 		<>
 			<div id="container-page-home">
-				<header>
-					<h1>{t("general.title")}</h1>
+				{search ? (
+					<SearchBar
+						query={searchQuery}
+						setQuery={setSearchQuery}
+						setSearch={setSearch}
+					/>
+				) : (
+					<header className="animate__animated animate__fadeIn">
+						<h1>{t("general.title")}</h1>
 
-					<div>
-						<div onClick={onClickButtonSearch}>
-							<IconSearch />
-						</div>
+						<div>
+							<div onClick={onClickButtonSearch}>
+								<IconSearch />
+							</div>
 
-						<div onClick={onClickButtonCart}>
-							{Object.keys(cart).length > 0 ? (
-								<span>{Object.keys(cart).length}</span>
-							) : (
-								<IconBasket />
-							)}
+							<div onClick={onClickButtonCart}>
+								{Object.keys(cart).length > 0 ? (
+									<span>{Object.keys(cart).length}</span>
+								) : (
+									<IconBasket />
+								)}
+							</div>
 						</div>
-					</div>
-				</header>
+					</header>
+				)}
 
 				<section>
 					{loading ? (
 						<ItemsShimmer />
-					) : items ? (
-						<Items items={items} />
+					) : itemsList ? (
+						<Items items={itemsList} search={search} />
 					) : (
 						<ItemsError />
 					)}
