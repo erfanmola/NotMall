@@ -1,7 +1,7 @@
 import "./BottomBar.scss";
 
 import type { FC } from "react";
-import { HiMiniUserCircle } from "react-icons/hi2";
+import { FaCircleUser } from "react-icons/fa6";
 import { IconNotcoinCircle } from "./Icons";
 import ImageLoader from "./ImageLoader";
 import { NavLink } from "react-router";
@@ -27,7 +27,7 @@ const BottomBar: FC = () => {
 						{lp.tgWebAppData?.user?.photo_url ? (
 							<ImageLoader src={lp.tgWebAppData.user.photo_url} />
 						) : (
-							<HiMiniUserCircle />
+							<FaCircleUser />
 						)}
 					</div>
 					<span>{lp.tgWebAppData?.user?.first_name}</span>

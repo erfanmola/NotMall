@@ -28,11 +28,7 @@ import {
 import { useCartStore } from "../stores/useCartStore";
 import SlotCounter from "react-slot-counter";
 import { FaMinus, FaPlus } from "react-icons/fa6";
-
-const priceSymbols: Record<string, string> = {
-	not: "$NOT",
-	usdt: "$",
-};
+import { priceSymbols } from "../utils/symbols";
 
 type ProductProps = {
 	item: Item;
@@ -297,64 +293,6 @@ export const Product: FC<ProductProps> = ({
 	);
 };
 
-const ProductShimmer: FC = () => {
-	return (
-		<div id="container-product-shimmer">
-			<header>
-				<ShimmerTitle line={1} variant="primary" />
-				<ShimmerButton />
-			</header>
-
-			<ShimmerText line={2} />
-
-			<ul>
-				<li>
-					<ShimmerTitle line={1} variant="secondary" />
-				</li>
-
-				<li>
-					<ShimmerTitle line={1} variant="secondary" />
-				</li>
-
-				<li>
-					<ShimmerTitle line={1} variant="secondary" />
-				</li>
-			</ul>
-
-			<ShimmerThumbnail />
-
-			<ul>
-				<li>
-					<ShimmerThumbnail />
-				</li>
-
-				<li>
-					<ShimmerThumbnail />
-				</li>
-
-				<li>
-					<ShimmerThumbnail />
-				</li>
-			</ul>
-
-			<ul>
-				<li>
-					<ShimmerButton />
-				</li>
-
-				<li>
-					<ShimmerButton />
-				</li>
-			</ul>
-		</div>
-	);
-};
-
-const ProductError: FC = () => {
-	// TODO: Implement this
-	return <div>Error...</div>;
-};
-
 const PageProduct = () => {
 	const { items, loading, fetchItems } = useItemsStore();
 	const params = useParams();
@@ -369,15 +307,71 @@ const PageProduct = () => {
 		}
 	}, []);
 
+	const renderContent = useMemo(() => {
+		if (loading) {
+			return (
+				<div id="container-product-shimmer">
+					<header>
+						<ShimmerTitle line={1} variant="primary" />
+						<ShimmerButton />
+					</header>
+
+					<ShimmerText line={2} />
+
+					<ul>
+						<li>
+							<ShimmerTitle line={1} variant="secondary" />
+						</li>
+
+						<li>
+							<ShimmerTitle line={1} variant="secondary" />
+						</li>
+
+						<li>
+							<ShimmerTitle line={1} variant="secondary" />
+						</li>
+					</ul>
+
+					<ShimmerThumbnail />
+
+					<ul>
+						<li>
+							<ShimmerThumbnail />
+						</li>
+
+						<li>
+							<ShimmerThumbnail />
+						</li>
+
+						<li>
+							<ShimmerThumbnail />
+						</li>
+					</ul>
+
+					<ul>
+						<li>
+							<ShimmerButton />
+						</li>
+
+						<li>
+							<ShimmerButton />
+						</li>
+					</ul>
+				</div>
+			);
+		}
+
+		if (item) {
+			return <Product item={item} standalone />;
+		}
+
+		// TODO: Implement this
+		return <div>Error...</div>;
+	}, [loading, item]);
+
 	return (
 		<div id="container-page-product">
-			{loading ? (
-				<ProductShimmer />
-			) : item ? (
-				<Product item={item} standalone />
-			) : (
-				<ProductError />
-			)}
+			<>{renderContent}</>
 		</div>
 	);
 };

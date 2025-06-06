@@ -31,11 +31,9 @@ import { motionMultiplier } from "../stores/useSettingsStore";
 import BottomBar from "../components/BottomBar";
 import { Pagination } from "swiper/modules";
 import { useCartStore } from "../stores/useCartStore";
-import { Sheet } from "react-modal-sheet";
-import { FaCheck, FaMinus } from "react-icons/fa6";
-import { IoClose } from "react-icons/io5";
+import { FaCheck } from "react-icons/fa6";
 import LottiePlayer from "../components/LottiePlayer";
-import { t } from "i18next";
+import ModalCart from "../modals/Cart";
 
 const Item: FC<{ item: Item }> = ({ item }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -164,180 +162,6 @@ const Item: FC<{ item: Item }> = ({ item }) => {
 	);
 };
 
-const Items: FC<{ items: Item[]; search?: boolean }> = ({ items, search }) => {
-	if (items.length === 0) {
-		return (
-			<div className="container-grid-items-home-not-found">
-				<LottiePlayer src="/assets/lottie/chick.json" autoplay />
-				<h2>
-					{search
-						? t("pages.home.search.notFound.title")
-						: t("pages.home.notFound.title")}
-				</h2>
-				<span>
-					{search
-						? t("pages.home.search.notFound.description")
-						: t("pages.home.notFound.description")}
-				</span>
-			</div>
-		);
-	}
-
-	// if (items.length <= 12) {
-	// 	return (
-	// 		<div className="container-grid-items-home">
-	// 			<div className="container-items-home">
-	// 				{items.map((item, index) => (
-	// 					<Item item={item} key={index} />
-	// 				))}
-	// 			</div>
-	// 		</div>
-	// 	);
-	// } else {
-	return (
-		<VirtuosoGrid
-			totalCount={items.length}
-			overscan={{
-				main: 2,
-				reverse: 2,
-			}}
-			className="container-grid-items-home"
-			listClassName="container-items-home"
-			itemContent={(index) => <Item item={items[index]} />}
-		/>
-	);
-	// }
-};
-
-const ItemsShimmer = () => {
-	return (
-		<div id="container-items-shimmer-home">
-			{Array.from(new Array(6)).map((_, index) => (
-				<div className="container-item-shimmer-home" key={index}>
-					<ShimmerThumbnail />
-
-					<div>
-						<ShimmerTitle line={1} variant="primary" />
-						<ShimmerTitle line={1} variant="secondary" />
-					</div>
-				</div>
-			))}
-		</div>
-	);
-};
-
-const ItemsError = () => {
-	// TODO: implement this
-	return <>Ooops</>;
-};
-
-const CartModal: FC<{
-	isOpen: boolean;
-	setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ isOpen, setOpen }) => {
-	const { cart, remove } = useCartStore();
-	const { t } = useTranslation();
-	const { items } = useItemsStore();
-
-	return (
-		<Sheet
-			isOpen={isOpen}
-			onClose={() => setOpen(false)}
-			detent="content-height"
-		>
-			<Sheet.Container>
-				{Object.keys(cart).length > 0 ? (
-					<Sheet.Content className="container-modal-cart">
-						<span
-							className="btn-close-modal"
-							onClick={() => {
-								invokeHapticFeedbackImpact("light");
-								setOpen(false);
-							}}
-						>
-							<IoClose />
-						</span>
-
-						<div>
-							<header>
-								<h2>{t("modals.cart.title")}</h2>
-							</header>
-
-							<div>
-								{Object.entries(cart).map(([productId, quantity]) => {
-									const item = items?.find(
-										(i) => i.id === Number.parseInt(productId),
-									);
-									if (!item) return;
-
-									return (
-										<div>
-											<ImageLoader src={item.images[0]} />
-
-											<div>
-												<span>{item.category}</span>
-												<h3>{item.name}</h3>
-											</div>
-
-											<span>
-												{quantity > 1 && (
-													<span>
-														{quantity} <IoClose />
-													</span>
-												)}
-												{item.price.toLocaleString()} {item.currency}
-											</span>
-
-											<span
-												onClick={() => {
-													invokeHapticFeedbackImpact("medium");
-													remove(item.id.toString());
-												}}
-											>
-												<FaMinus />
-											</span>
-										</div>
-									);
-								})}
-							</div>
-						</div>
-					</Sheet.Content>
-				) : (
-					<Sheet.Content className="container-modal-cart-empty">
-						<span
-							className="btn-close-modal"
-							onClick={() => {
-								invokeHapticFeedbackImpact("light");
-								setOpen(false);
-							}}
-						>
-							<IoClose />
-						</span>
-
-						<div>
-							<h2>{t("modals.cart.noItems.title")}</h2>
-							<span>{t("modals.cart.noItems.description")}</span>
-						</div>
-
-						<div id="container-action-buttons" style={{ paddingTop: "0" }}>
-							<div
-								className="primary"
-								onClick={() => {
-									invokeHapticFeedbackImpact("light");
-									setOpen(false);
-								}}
-							>
-								<span>{t("general.ok")}</span>
-							</div>
-						</div>
-					</Sheet.Content>
-				)}
-			</Sheet.Container>
-			<Sheet.Backdrop onTap={() => setOpen(false)} />
-		</Sheet>
-	);
-};
-
 const SearchBar: FC<{
 	query: string;
 	setQuery: Dispatch<SetStateAction<string>>;
@@ -398,7 +222,7 @@ const PageHome = () => {
 	const { t } = useTranslation();
 	const { items, loading, fetchItems } = useItemsStore();
 	const { cart } = useCartStore();
-	const [cartModal, setCartModal] = useState(false);
+	const [modalCart, setModalCart] = useState(false);
 	const [search, setSearch] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 
@@ -426,7 +250,7 @@ const PageHome = () => {
 	const onClickButtonCart = useCallback(() => {
 		if (!items) return;
 		invokeHapticFeedbackImpact("light");
-		setCartModal(true);
+		setModalCart(true);
 	}, [items]);
 
 	const totalPrice = useMemo(() => {
@@ -450,61 +274,137 @@ const PageHome = () => {
 		invokeHapticFeedbackImpact("medium");
 	}, []);
 
+	const renderHeader = useMemo(() => {
+		if (search) {
+			return (
+				<SearchBar
+					query={searchQuery}
+					setQuery={setSearchQuery}
+					setSearch={setSearch}
+				/>
+			);
+		}
+
+		return (
+			<header className="animate__animated animate__fadeIn">
+				<h1>{t("general.title")}</h1>
+
+				<div>
+					<div onClick={onClickButtonSearch}>
+						<IconSearch />
+					</div>
+
+					<div onClick={onClickButtonCart}>
+						{Object.keys(cart).length > 0 ? (
+							<span>{Object.keys(cart).length}</span>
+						) : (
+							<IconBasket />
+						)}
+					</div>
+				</div>
+			</header>
+		);
+	}, [search, searchQuery, cart]);
+
+	const renderContent = useMemo(() => {
+		if (loading) {
+			return (
+				<div id="container-items-shimmer-home">
+					{Array.from(new Array(6)).map((_, index) => (
+						<div className="container-item-shimmer-home" key={index}>
+							<ShimmerThumbnail />
+
+							<div>
+								<ShimmerTitle line={1} variant="primary" />
+								<ShimmerTitle line={1} variant="secondary" />
+							</div>
+						</div>
+					))}
+				</div>
+			);
+		}
+
+		if (itemsList) {
+			if (itemsList.length === 0) {
+				return (
+					<div className="container-grid-items-home-not-found">
+						<LottiePlayer src="/assets/lottie/chick.json" autoplay />
+						<h2>
+							{search
+								? t("pages.home.search.notFound.title")
+								: t("pages.home.notFound.title")}
+						</h2>
+						<span>
+							{search
+								? t("pages.home.search.notFound.description")
+								: t("pages.home.notFound.description")}
+						</span>
+					</div>
+				);
+			}
+
+			// if (items.length <= 12) {
+			// 	return (
+			// 		<div className="container-grid-items-home">
+			// 			<div className="container-items-home">
+			// 				{items.map((item, index) => (
+			// 					<Item item={item} key={index} />
+			// 				))}
+			// 			</div>
+			// 		</div>
+			// 	);
+			// } else {
+			return (
+				<VirtuosoGrid
+					totalCount={itemsList.length}
+					overscan={{
+						main: 2,
+						reverse: 2,
+					}}
+					className="container-grid-items-home"
+					listClassName="container-items-home"
+					itemContent={(index) => <Item item={itemsList[index]} />}
+				/>
+			);
+			// }
+		}
+
+		// TODO: implement this
+		return <>Ooops</>;
+	}, [loading, itemsList, search]);
+
+	const renderBuyButton = useMemo(() => {
+		if (items && Object.keys(cart).length > 0) {
+			return (
+				<div id="container-action-buttons" className="container-buy-button">
+					<div className="primary" onClick={onClickButtonBuy}>
+						<span>
+							{t("pages.product.buyFor", {
+								price: totalPrice.toLocaleString(),
+								currency: "NOT",
+							})}
+						</span>
+					</div>
+				</div>
+			);
+		}
+	}, [cart, items, totalPrice]);
+
 	return (
 		<>
 			<div id="container-page-home">
-				{search ? (
-					<SearchBar
-						query={searchQuery}
-						setQuery={setSearchQuery}
-						setSearch={setSearch}
-					/>
-				) : (
-					<header className="animate__animated animate__fadeIn">
-						<h1>{t("general.title")}</h1>
-
-						<div>
-							<div onClick={onClickButtonSearch}>
-								<IconSearch />
-							</div>
-
-							<div onClick={onClickButtonCart}>
-								{Object.keys(cart).length > 0 ? (
-									<span>{Object.keys(cart).length}</span>
-								) : (
-									<IconBasket />
-								)}
-							</div>
-						</div>
-					</header>
-				)}
+				<>{renderHeader}</>
 
 				<section>
-					{loading ? (
-						<ItemsShimmer />
-					) : itemsList ? (
-						<Items items={itemsList} search={search} />
-					) : (
-						<ItemsError />
-					)}
+					<>{renderContent}</>
 				</section>
 
 				<BottomBar />
-				{Object.keys(cart).length > 0 && items && (
-					<div id="container-action-buttons" className="container-buy-button">
-						<div className="primary" onClick={onClickButtonBuy}>
-							<span>
-								{t("pages.product.buyFor", {
-									price: totalPrice.toLocaleString(),
-									currency: "NOT",
-								})}
-							</span>
-						</div>
-					</div>
-				)}
+
+				<>{renderBuyButton}</>
 			</div>
 
-			<CartModal isOpen={cartModal} setOpen={setCartModal} />
+			<ModalCart isOpen={modalCart} setOpen={setModalCart} />
 		</>
 	);
 };
