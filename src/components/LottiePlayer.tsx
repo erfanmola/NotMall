@@ -1,4 +1,4 @@
-import Lottie from "lottie-light-react";
+import Lottie from "lottie-react-light";
 import { useEffect, useState, type FC, type JSX } from "react";
 
 export type LottiePlayerProps = {

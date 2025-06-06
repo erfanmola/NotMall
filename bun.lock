@@ -10,7 +10,7 @@
         "@tonconnect/sdk": "^3.1.0",
         "animate.css": "^4.1.1",
         "i18next": "^25.2.1",
-        "lottie-light-react": "^2.4.0",
+        "lottie-react-light": "^2.4.1",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "react-i18next": "^15.5.2",
@@ -651,7 +651,7 @@
 
     "loose-envify": ["loose-envify@1.4.0", "", { "dependencies": { "js-tokens": "^3.0.0 || ^4.0.0" }, "bin": { "loose-envify": "cli.js" } }, "sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q=="],
 
-    "lottie-light-react": ["lottie-light-react@2.4.0", "", { "dependencies": { "lottie-web": "^5.10.2" }, "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0", "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0" } }, "sha512-TXJOnyqEc6ev9/um8Xkxve5EVcgCX2pi1olWc8jj+81qaPyFBA+VxHIc2Ojl42IqeAiKhGHz098ztQOIImJcyg=="],
+    "lottie-react-light": ["lottie-react-light@2.4.1", "", { "dependencies": { "lottie-web": "^5.10.2" }, "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-SAL2O8zrHXQgCOCl0HsBq5VGMY8hQqIlq72sOtNypr24wh9Gy5kqhDwOGjiEzhU6JInwNTO5pjiYskfw+COoPg=="],
 
     "lottie-web": ["lottie-web@5.13.0", "", {}, "sha512-+gfBXl6sxXMPe8tKQm7qzLnUy5DUPJPKIyRHwtpCpyUEYjHYRJC/5gjUvdkuO2c3JllrPtHXH5UJJK8LRYl5yQ=="],
 
