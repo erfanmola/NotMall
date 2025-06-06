@@ -43,6 +43,8 @@
 			font-weight: 500;
 			flex-grow: 1;
 			line-height: 2rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 
 		>div {
@@ -50,6 +52,7 @@
 			align-items: center;
 			gap: 0.675rem;
 			padding: 0 0.125rem;
+			flex-shrink: 0;
 
 			>div {
 				cursor: pointer;

@@ -63,9 +63,17 @@
 		overflow: hidden;
 
 		>div#container-items-shimmer-home {
-			display: grid;
-			grid-template-columns: repeat(2, 1fr);
-			grid-gap: 1.75rem 0.75rem;
+			width: 100%;
+			overflow: hidden;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1.75rem 0.75rem;
+
+			>div {
+				width: calc(50% - (1.75rem / 2));
+				flex-grow: 1;
+				flex-shrink: 0;
+			}
 		}
 	}
 }
@@ -77,11 +85,17 @@
 	overflow-y: auto;
 
 	.container-items-home {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		grid-gap: 1.75rem 0.75rem;
 		width: 100%;
 		overflow: hidden;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.75rem 0.75rem;
+
+		>div {
+			width: calc(50% - (1.75rem / 2));
+			flex-grow: 1;
+			flex-shrink: 0;
+		}
 
 		.container-item-home {
 			display: flex;
@@ -230,6 +244,7 @@
 
 	>div.lottie-animation {
 		width: 5rem;
+		height: 5rem;
 	}
 
 	>h2 {
@@ -337,24 +352,30 @@
 					width: 3.75rem;
 					height: 3.75rem;
 					border-radius: 0.75rem;
+					flex-shrink: 0;
 				}
 
 				>div:nth-child(2) {
 					flex-grow: 1;
 					display: flex;
 					flex-direction: column;
+					overflow: hidden;
 
 					>span {
 						opacity: 50%;
 						font-size: 0.75rem;
 						line-height: 0.875rem;
 						font-weight: 500;
+						overflow: hidden;
+						text-overflow: ellipsis;
 					}
 
 					>h3 {
 						font-size: 1.0625rem;
 						line-height: 1.5rem;
 						font-weight: 500;
+						overflow: hidden;
+						text-overflow: ellipsis;
 					}
 				}
 
@@ -364,6 +385,7 @@
 					display: flex;
 					align-items: center;
 					gap: 0.125rem;
+					flex-shrink: 0;
 
 					>span {
 						display: flex;
@@ -388,6 +410,7 @@
 					text-align: center;
 					touch-action: none;
 					cursor: pointer;
+					flex-shrink: 0;
 
 					>svg {
 						height: 1rem;

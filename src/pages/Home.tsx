@@ -490,7 +490,7 @@ const PageHome = () => {
 				</section>
 
 				<BottomBar />
-				{Object.keys(cart).length > 0 && (
+				{Object.keys(cart).length > 0 && items && (
 					<div id="container-action-buttons" className="container-buy-button">
 						<div className="primary" onClick={onClickButtonBuy}>
 							<span>
