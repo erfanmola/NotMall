@@ -70,8 +70,7 @@
 			gap: 1.75rem 0.75rem;
 
 			>div {
-				width: calc(50% - (1.75rem / 2));
-				flex-grow: 1;
+				width: calc(50% - (0.75rem / 2));
 				flex-shrink: 0;
 			}
 		}
@@ -92,8 +91,7 @@
 		gap: 1.75rem 0.75rem;
 
 		>div {
-			width: calc(50% - (1.75rem / 2));
-			flex-grow: 1;
+			width: calc(50% - (0.75rem / 2));
 			flex-shrink: 0;
 		}
 
