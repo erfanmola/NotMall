@@ -35,6 +35,8 @@ import { FaCheck } from "react-icons/fa6";
 import LottiePlayer from "../components/LottiePlayer";
 import ModalCart from "../modals/Cart";
 import { SectionError } from "./Error";
+import { useLaunchParams } from "@telegram-apps/sdk-react";
+import { useNavigate } from "react-router";
 
 const Item: FC<{ item: Item }> = ({ item }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -226,6 +228,8 @@ const PageHome = () => {
 	const [modalCart, setModalCart] = useState(false);
 	const [search, setSearch] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
+	const lp = useLaunchParams();
+	const navigate = useNavigate();
 
 	const itemsList = useMemo(() => {
 		if (!items) return items;
@@ -268,6 +272,19 @@ const PageHome = () => {
 	}, []);
 
 	useEffect(() => {
+		if (
+			lp.tgWebAppStartParam &&
+			!sessionStorage.getItem("visitedTgWebAppStartParam")
+		) {
+			const matchProduct = lp.tgWebAppStartParam?.match(/product-(\d+)/);
+
+			if (matchProduct) {
+				sessionStorage.setItem("visitedTgWebAppStartParam", "true");
+				navigate(`/product/${matchProduct[1]}`);
+				return;
+			}
+		}
+
 		if (!items) {
 			fetchItems();
 		}

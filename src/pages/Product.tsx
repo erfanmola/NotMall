@@ -65,9 +65,8 @@ export const Product: FC<ProductProps> = ({
 
 	const onClickShare = useCallback(() => {
 		invokeHapticFeedbackImpact("light");
-		// TODO: implement real tma link
 		postEvent("web_app_open_tg_link", {
-			path_full: `/share/url?url=https://t.me/${import.meta.env.VITE_BOT_USERNAME}?start=product-${item.id}&text=${encodeURI(t("pages.product.share"))}`,
+			path_full: `/share/url?url=https://t.me/${import.meta.env.VITE_BOT_USERNAME}/${import.meta.env.VITE_MINIAPP_SLUG}?startapp=product-${item.id}&text=${encodeURI(t("pages.product.share"))}`,
 		});
 	}, []);
 
