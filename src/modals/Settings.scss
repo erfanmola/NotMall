@@ -1,0 +1,49 @@
+.container-modal-settings {
+	padding-bottom: calc(var(--tg-viewport-safe-area-inset-bottom) + var(--tg-viewport-content-safe-area-inset-bottom));
+
+	>div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		>header {
+			display: flex;
+			align-items: center;
+			height: 1.75rem;
+
+			>h2 {
+				font-size: 1.25rem;
+				line-height: 1.5rem;
+				font-weight: 500;
+			}
+		}
+
+		>section {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			padding: 1rem 0 3.75rem;
+
+			>div {
+				display: flex;
+				align-items: center;
+				width: 100%;
+				padding: 0.875rem 0;
+
+				&:not(:last-of-type) {
+					border-bottom: 0.125rem solid rgba(var(--text-color-rgb), 0.0425);
+				}
+
+				>span {
+					font-size: 1.0625rem;
+					flex-grow: 1;
+				}
+
+				>div {
+					font-size: 1.0625rem;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}
