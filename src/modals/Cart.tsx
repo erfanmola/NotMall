@@ -1,3 +1,4 @@
+import "./Cart.scss";
 import { useMemo, type Dispatch, type FC, type SetStateAction } from "react";
 
 import { FaMinus } from "react-icons/fa6";

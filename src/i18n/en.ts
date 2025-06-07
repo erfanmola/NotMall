@@ -4,6 +4,7 @@ const translation = {
 		search: "Search",
 		cancel: "Cancel",
 		ok: "OK",
+		unknown: "Unknown",
 	},
 	bottombar: {
 		store: "Store",

@@ -14,6 +14,7 @@
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
+		overflow: hidden;
 
 		>div:first-child {
 			display: flex;
@@ -68,11 +69,13 @@
 #container-profile-history-shimmer {
 	display: flex;
 	flex-direction: column;
+	flex-grow: 1;
 
 	>header {
 		height: 3.5rem;
 		display: flex;
 		align-items: center;
+		flex-shrink: 0;
 
 		>h2 {
 			font-size: 1.25rem;
@@ -88,5 +91,135 @@
 }
 
 #container-profile-history {
-	>div {}
+	.container-items-history {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+
+		.container-item-history {
+			display: flex;
+			align-items: center;
+			padding: 0.25rem 0;
+			gap: 0.75rem;
+
+			>div.image-loader {
+				width: 3.75rem;
+				height: 3.75rem;
+				border-radius: 0.75rem;
+				flex-shrink: 0;
+			}
+
+			>div:nth-child(2) {
+				flex-grow: 1;
+				display: flex;
+				flex-direction: column;
+				overflow: hidden;
+
+				>span {
+					opacity: 50%;
+					font-size: 0.75rem;
+					line-height: 0.875rem;
+					font-weight: 500;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+				>h3 {
+					font-size: 1.0625rem;
+					line-height: 1.5rem;
+					font-weight: 500;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+			}
+
+			>div:nth-child(3) {
+				flex-shrink: 0;
+				display: flex;
+				flex-direction: column;
+				overflow: hidden;
+				align-items: flex-end;
+
+				>span {
+					opacity: 50%;
+					font-size: 0.75rem;
+					line-height: 0.875rem;
+					font-weight: 500;
+				}
+
+				>b {
+					font-size: 1.0625rem;
+					line-height: 1.5rem;
+					font-weight: 500;
+				}
+			}
+		}
+	}
+}
+
+#container-profile-history-shimmer {
+	overflow: hidden;
+
+	.container-items-shimmer-history {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+
+		.container-item-shimmer-history {
+			display: flex;
+			align-items: center;
+			padding: 0.25rem 0 !important;
+			gap: 0.75rem;
+
+			>div:nth-child(1) {
+				width: 3.75rem;
+				height: 3.75rem;
+				border-radius: 0.75rem;
+				flex-shrink: 0;
+				overflow: hidden;
+			}
+
+			>div:nth-child(2) {
+				flex-grow: 1;
+			}
+
+			>div:nth-child(3) {
+				flex-shrink: 0;
+				align-items: flex-end;
+			}
+
+			>div:nth-child(2),
+			>div:nth-child(3) {
+				display: flex;
+				flex-direction: column;
+				overflow: hidden;
+
+				>div:nth-child(1) {
+					display: flex;
+					align-items: center;
+					height: 0.875rem;
+					width: 3rem;
+					overflow: hidden;
+
+					>div {
+						height: 0.75rem;
+						border-radius: 10rem;
+					}
+				}
+
+				>div:nth-child(2) {
+					display: flex;
+					align-items: center;
+					height: 1.5rem;
+					width: 6rem;
+					overflow: hidden;
+
+					>div {
+						height: 1.0625rem;
+						border-radius: 10rem;
+					}
+				}
+			}
+		}
+	}
 }

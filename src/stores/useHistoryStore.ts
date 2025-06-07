@@ -1,3 +1,4 @@
+import type { Item } from "./useItemsStore";
 import { create } from "zustand";
 import { requestAPI } from "../utils/api";
 import { simulateDelay } from "./useSettingsStore";
@@ -7,6 +8,7 @@ export type HistoryItem = {
 	total: number;
 	currency: string;
 	timestamp: number;
+	product?: Item;
 };
 
 type HistoryItemsState = {

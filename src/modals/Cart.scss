@@ -1,0 +1,135 @@
+.container-modal-cart {
+	padding-bottom: calc(3.625rem + var(--tg-viewport-safe-area-inset-bottom) + var(--tg-viewport-content-safe-area-inset-bottom));
+
+	>div:nth-child(2) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
+		>header {
+			display: flex;
+			align-items: center;
+			height: 1.75rem;
+
+			>h2 {
+				font-size: 1.25rem;
+				line-height: 1.5rem;
+				font-weight: 500;
+			}
+		}
+
+		>div {
+			display: flex;
+			flex-direction: column;
+			padding: 1rem 0;
+			gap: 0.25rem;
+			width: 100%;
+			min-height: 11.75rem;
+			max-height: 80vh;
+			overflow: hidden;
+			overflow-y: auto;
+
+			>div {
+				display: flex;
+				align-items: center;
+				width: 100%;
+				padding: 0.25rem 0;
+				gap: 0.75rem;
+
+				>div.image-loader {
+					width: 3.75rem;
+					height: 3.75rem;
+					border-radius: 0.75rem;
+					flex-shrink: 0;
+				}
+
+				>div:nth-child(2) {
+					flex-grow: 1;
+					display: flex;
+					flex-direction: column;
+					overflow: hidden;
+
+					>span {
+						opacity: 50%;
+						font-size: 0.75rem;
+						line-height: 0.875rem;
+						font-weight: 500;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+
+					>h3 {
+						font-size: 1.0625rem;
+						line-height: 1.5rem;
+						font-weight: 500;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+				}
+
+				>span:nth-child(3) {
+					font-size: 1.0625rem;
+					line-height: 1.375rem;
+					display: flex;
+					align-items: center;
+					gap: 0.125rem;
+					flex-shrink: 0;
+
+					>span {
+						display: flex;
+						align-items: center;
+						font-family: 1rem;
+						gap: 0.125rem;
+
+						>svg {
+							opacity: 50%;
+						}
+					}
+				}
+
+				>span:last-child {
+					width: 1.75rem;
+					height: 1.75rem;
+					background-color: rgba(var(--text-color-rgb), 0.08);
+					border-radius: 0.5rem;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					text-align: center;
+					touch-action: none;
+					cursor: pointer;
+					flex-shrink: 0;
+
+					>svg {
+						height: 1rem;
+						opacity: 0.2;
+					}
+				}
+			}
+		}
+	}
+}
+
+.container-modal-cart-empty {
+	>div:nth-child(2) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		min-height: 14rem;
+		gap: 0.5rem;
+
+		>h2 {
+			font-size: 1.625rem;
+			line-height: 2rem;
+			font-weight: 500;
+		}
+
+		>span {
+			font-size: 1.0625rem;
+			line-height: 1.375rem;
+			opacity: 0.5;
+		}
+	}
+}
