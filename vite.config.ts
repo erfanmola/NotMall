@@ -42,7 +42,8 @@ export default defineConfig((config) => {
 								/html/,
 								/body/,
 								/swiper/,
-								/react-modal-sheet/,
+								/vaul/,
+								/lottie-animation/,
 							],
 						},
 						defaultExtractor: (content) =>
