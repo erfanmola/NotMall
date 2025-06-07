@@ -100,9 +100,6 @@ const translation = {
 				empty: {
 					title: "Simulate Empty Items",
 				},
-				crash: {
-					title: "Fuck it, Crash!",
-				},
 				reload: "The app needs to be reloaded for the changes to take effect.",
 			},
 		},

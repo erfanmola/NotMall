@@ -101,9 +101,6 @@ const translation = {
 				empty: {
 					title: "Leere Artikel simulieren",
 				},
-				crash: {
-					title: "Zum Absturz bringen!",
-				},
 				reload:
 					"Die App muss neu geladen werden, damit die Änderungen wirksam werden.",
 			},

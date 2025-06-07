@@ -99,9 +99,6 @@ const translation = {
 				empty: {
 					title: "模拟空商品",
 				},
-				crash: {
-					title: "崩溃！",
-				},
 				reload: "需要重新加载应用以使更改生效。",
 			},
 		},

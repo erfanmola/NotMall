@@ -100,9 +100,6 @@ const translation = {
 				empty: {
 					title: "Simular artículos vacíos",
 				},
-				crash: {
-					title: "¡Que se caiga!",
-				},
 				reload:
 					"La aplicación necesita recargarse para que los cambios surtan efecto.",
 			},
