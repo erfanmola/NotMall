@@ -4,12 +4,13 @@ import {
 	postEvent as postEventUnsafe,
 	useLaunchParams,
 } from "@telegram-apps/sdk-react";
-
-// TODO: Implement Support for Disabling Haptic Feedbacks
+import { settingsNonReactive } from "../stores/useSettingsStore";
 
 export const invokeHapticFeedbackImpact = (
 	style: ImpactHapticFeedbackStyle,
 ) => {
+	if (!settingsNonReactive.haptics.enabled) return;
+
 	postEvent("web_app_trigger_haptic_feedback", {
 		type: "impact",
 		impact_style: style,
@@ -19,6 +20,8 @@ export const invokeHapticFeedbackImpact = (
 export const invokeHapticFeedbackNotification = (
 	style: NotificationHapticFeedbackType,
 ) => {
+	if (!settingsNonReactive.haptics.enabled) return;
+
 	postEvent("web_app_trigger_haptic_feedback", {
 		type: "notification",
 		notification_type: style,
@@ -26,6 +29,8 @@ export const invokeHapticFeedbackNotification = (
 };
 
 export const invokeHapticFeedbackSelectionChanged = () => {
+	if (!settingsNonReactive.haptics.enabled) return;
+
 	postEvent("web_app_trigger_haptic_feedback", {
 		type: "selection_change",
 	});
