@@ -34,6 +34,7 @@ import { useCartStore } from "../stores/useCartStore";
 import { FaCheck } from "react-icons/fa6";
 import LottiePlayer from "../components/LottiePlayer";
 import ModalCart from "../modals/Cart";
+import { SectionError } from "./Error";
 
 const Item: FC<{ item: Item }> = ({ item }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -369,8 +370,12 @@ const PageHome = () => {
 			// }
 		}
 
-		// TODO: implement this
-		return <>Ooops</>;
+		return (
+			<SectionError
+				title={t("pages.error.data.error.title")}
+				description={t("pages.error.data.error.description")}
+			/>
+		);
 	}, [loading, itemsList, search]);
 
 	const renderBuyButton = useMemo(() => {

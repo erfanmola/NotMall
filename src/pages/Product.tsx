@@ -29,6 +29,7 @@ import { useCartStore } from "../stores/useCartStore";
 import SlotCounter from "react-slot-counter";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { priceSymbols } from "../utils/symbols";
+import { SectionError } from "./Error";
 
 type ProductProps = {
 	item: Item;
@@ -295,6 +296,7 @@ export const Product: FC<ProductProps> = ({
 
 const PageProduct = () => {
 	const { items, loading, fetchItems } = useItemsStore();
+	const { t } = useTranslation();
 	const params = useParams();
 	const item = useMemo(
 		() => items?.find((item) => item.id.toString() === params.id),
@@ -365,9 +367,13 @@ const PageProduct = () => {
 			return <Product item={item} standalone />;
 		}
 
-		// TODO: Implement this
-		return <div>Error...</div>;
-	}, [loading, item]);
+		return (
+			<SectionError
+				title={t("pages.error.data.error.title")}
+				description={t("pages.error.data.error.description")}
+			/>
+		);
+	}, [loading, item, t]);
 
 	return (
 		<div id="container-page-product">

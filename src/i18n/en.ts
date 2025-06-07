@@ -13,6 +13,12 @@ const translation = {
 		error: {
 			title: "Error",
 			description: "An error occurred.",
+			data: {
+				error: {
+					title: "Something’s fucked up",
+					description: "We couldn’t fetch data, try reloading the app.",
+				},
+			},
 		},
 		errorInvalidEnv: {
 			title: "Invalid Environment",

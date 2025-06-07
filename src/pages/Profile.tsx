@@ -16,6 +16,7 @@ import { VirtuosoGrid } from "react-virtuoso";
 import { useItemsStore } from "../stores/useItemsStore";
 import { formatUnixDate } from "../utils/date";
 import { ShimmerThumbnail, ShimmerTitle } from "react-shimmer-effects";
+import { SectionError } from "./Error";
 
 const Item: FC<{ item: HistoryItem }> = ({ item }) => {
 	if (!item.product) return;
@@ -110,7 +111,12 @@ const PageProfile = () => {
 		}
 
 		if (!historyItems || !items || !historyItemsFull) {
-			return <section>Error</section>;
+			return (
+				<SectionError
+					title={t("pages.error.data.error.title")}
+					description={t("pages.error.data.error.description")}
+				/>
+			);
 		}
 
 		if (historyItems.length === 0) {
