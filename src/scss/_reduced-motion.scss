@@ -1,6 +1,10 @@
 html[prefer-reduced-motion=true] {
 	.animate__animated {
 		animation: none;
-		animation-duration: 0;
+		animation-duration: 0s;
+	}
+
+	[data-vaul-drawer] {
+		animation-duration: 0s !important;
 	}
 }

@@ -14,5 +14,11 @@ body {
 			Droid Sans,
 			Helvetica Neue,
 			sans-serif;
+
+		.switch {
+			input:checked+div:after {
+				transform: translateX(100%);
+			}
+		}
 	}
 }

@@ -49,6 +49,10 @@ body,
 	min-height: max(var(--ptg-viewport-height), 100vh);
 }
 
+#root {
+	isolation: isolate;
+}
+
 body {
 	background-color: var(--bg-color);
 	color: var(--text-color);
