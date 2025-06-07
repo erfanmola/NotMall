@@ -1,4 +1,14 @@
 const translation = {
+	locales: {
+		en: "English",
+		fa: "فارسی",
+		ar: "العربية",
+		ru: "Русский",
+		es: "Español",
+		de: "Deutsch",
+		hi: "हिन्दी",
+		zh: "中文",
+	},
 	general: {
 		title: "Not Mall",
 		search: "Search",
@@ -51,6 +61,18 @@ const translation = {
 			buyFor: "Buy for {{price}} {{currency}}",
 			share: "Have a big 🍆? Check this out!",
 		},
+		purchase: {
+			success: {
+				title: "You Got It!",
+				description: "Your purchase is one the way",
+				button: "Awesome",
+			},
+			failed: {
+				title: "You Fucked Up!",
+				description: "Your purchase is in my ass",
+				button: "!(Awesome)",
+			},
+		},
 	},
 	modals: {
 		cart: {
@@ -58,6 +80,30 @@ const translation = {
 			noItems: {
 				title: "Cart’s cold",
 				description: "No items yet",
+			},
+		},
+		settings: {
+			title: "Settings",
+			sections: {
+				language: {
+					title: "Language",
+				},
+				vibration: {
+					title: "Haptic Feedback",
+				},
+				motion: {
+					title: "Reduce Motion",
+				},
+				delay: {
+					title: "Simulate Slow Network",
+				},
+				empty: {
+					title: "Simulate Empty Items",
+				},
+				crash: {
+					title: "Fuck it, Crash!",
+				},
+				reload: "The app needs to be reloaded for the changes to take effect.",
 			},
 		},
 	},
