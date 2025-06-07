@@ -1,5 +1,6 @@
 import Lottie from "lottie-react-light";
 import { useEffect, useState, type FC, type JSX } from "react";
+import { useSettingsStore } from "../stores/useSettingsStore";
 
 export type LottiePlayerProps = {
 	src: string;
@@ -12,6 +13,7 @@ export const LottiePlayerFileCache: { [key: string]: any } = {};
 
 const LottiePlayer: FC<LottiePlayerProps> = (props) => {
 	const [loaded, setLoaded] = useState(false);
+	const { settings } = useSettingsStore();
 
 	useEffect(() => {
 		if (props.src in LottiePlayerFileCache) {
@@ -35,7 +37,7 @@ const LottiePlayer: FC<LottiePlayerProps> = (props) => {
 				<Lottie
 					animationData={LottiePlayerFileCache[props.src]}
 					loop={props.loop ?? false}
-					autoplay={props.autoplay ?? false}
+					autoplay={(props.autoplay ?? false) && !settings.reduceMotion.enabled}
 				/>
 			)}
 			{!loaded &&
