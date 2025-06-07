@@ -143,10 +143,6 @@ const ModalSettings: FC<{
 								/>
 							</div>
 						</div>
-
-						<div>
-							<span>{t("modals.settings.sections.crash.title")}</span>
-						</div>
 					</section>
 				</div>
 			</div>
