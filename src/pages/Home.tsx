@@ -304,7 +304,7 @@ const PageHome = () => {
 				</div>
 			</header>
 		);
-	}, [search, searchQuery, cart]);
+	}, [search, searchQuery, cart, onClickButtonCart, onClickButtonSearch]);
 
 	const renderContent = useMemo(() => {
 		if (loading) {
