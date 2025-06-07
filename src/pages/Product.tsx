@@ -15,7 +15,6 @@ import { useNavigate, useParams } from "react-router";
 import { off, on } from "@telegram-apps/sdk-react";
 import ImageLoader from "../components/ImageLoader";
 import { IconShare } from "../components/Icons";
-import { useTranslation } from "react-i18next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { motionMultiplier } from "../stores/useSettingsStore";
 import { Flip } from "gsap/all";
@@ -30,6 +29,7 @@ import SlotCounter from "react-slot-counter";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { priceSymbols } from "../utils/symbols";
 import { SectionError } from "./Error";
+import { useTranslation } from "../i18n/i18nProvider";
 
 type ProductProps = {
 	item: Item;

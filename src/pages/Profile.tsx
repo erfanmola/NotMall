@@ -11,12 +11,13 @@ import {
 	type HistoryItem,
 } from "../stores/useHistoryStore";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
-import { useTranslation } from "react-i18next";
 import { VirtuosoGrid } from "react-virtuoso";
 import { useItemsStore } from "../stores/useItemsStore";
 import { formatUnixDate } from "../utils/date";
 import { ShimmerThumbnail, ShimmerTitle } from "react-shimmer-effects";
 import { SectionError } from "./Error";
+import { useSettingsStore } from "../stores/useSettingsStore";
+import { useTranslation } from "../i18n/i18nProvider";
 
 const Item: FC<{ item: HistoryItem }> = ({ item }) => {
 	if (!item.product) return;
@@ -46,6 +47,8 @@ const PageProfile = () => {
 
 	const { items, fetchItems, loading: itemsLoading } = useItemsStore();
 	const { fetchHistoryItems, historyItems, loading } = useHistoryItemsStore();
+	const { settings } = useSettingsStore();
+
 	const historyItemsFull = useMemo(() => {
 		if (!(items && historyItems)) return null;
 
@@ -67,7 +70,7 @@ const PageProfile = () => {
 				product,
 			} satisfies HistoryItem;
 		});
-	}, [historyItems, items]);
+	}, [historyItems, items, t]);
 
 	useEffect(() => {
 		if (!historyItems) {
@@ -119,7 +122,7 @@ const PageProfile = () => {
 			);
 		}
 
-		if (historyItems.length === 0) {
+		if (historyItems.length === 0 || settings.emptyItems.enabled) {
 			return (
 				<section id="container-profile-history-empty">
 					<h2>{t("pages.profile.noHistory.title")}</h2>
@@ -146,7 +149,15 @@ const PageProfile = () => {
 				/>
 			</section>
 		);
-	}, [loading, historyItems, t, itemsLoading, items, historyItemsFull]);
+	}, [
+		loading,
+		historyItems,
+		t,
+		itemsLoading,
+		items,
+		historyItemsFull,
+		settings.emptyItems.enabled,
+	]);
 
 	return (
 		<div id="container-page-profile">

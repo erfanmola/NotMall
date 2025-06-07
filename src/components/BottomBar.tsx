@@ -6,7 +6,7 @@ import { IconNotcoinCircle } from "./Icons";
 import ImageLoader from "./ImageLoader";
 import { NavLink } from "react-router";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "../i18n/i18nProvider";
 
 const BottomBar: FC = () => {
 	const { t } = useTranslation();

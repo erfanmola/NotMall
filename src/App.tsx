@@ -5,21 +5,23 @@ import {
 	init,
 	isTMA,
 	miniApp,
+	on,
 	themeParams,
 	useLaunchParams,
 	viewport,
 } from "@telegram-apps/sdk-react";
 import { isVersionAtLeast, postEvent } from "./utils/telegram";
+import { useEffect, useState } from "react";
 
 import { Flip } from "gsap/all";
+import ModalSettings from "./modals/Settings";
 import PageError from "./pages/Error";
 import { RouterProvider } from "react-router";
 import gsap from "gsap";
 import { preloadLottieAnimations } from "./utils/preload";
 import { router } from "./router";
-import { useEffect } from "react";
 import { useGSAP } from "@gsap/react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "./i18n/i18nProvider";
 
 const handleTheme = (isDark: boolean) => {
 	document.body.setAttribute("data-theme", isDark ? "dark" : "light");
@@ -38,6 +40,8 @@ const handleTheme = (isDark: boolean) => {
 };
 
 const App = () => {
+	const [settingsModal, setSettingsModal] = useState(false);
+
 	if (isTMA()) {
 		init();
 		const lp = useLaunchParams();
@@ -105,12 +109,12 @@ const App = () => {
 
 			if (isVersionAtLeast("6.1", lp.tgWebAppVersion)) {
 				postEvent("web_app_setup_settings_button", {
-					is_visible: false,
+					is_visible: true,
 				});
 
-				// TODO: open settings modal
-				// on("settings_button_pressed", () => {
-				// });
+				on("settings_button_pressed", () => {
+					setSettingsModal(true);
+				});
 			}
 
 			if (isVersionAtLeast("6.2", lp.tgWebAppVersion)) {
@@ -165,7 +169,12 @@ const App = () => {
 			preloadLottieAnimations();
 		}, 5e3);
 
-		return <RouterProvider router={router} />;
+		return (
+			<>
+				<RouterProvider router={router} />
+				<ModalSettings isOpen={settingsModal} setOpen={setSettingsModal} />
+			</>
+		);
 	}
 
 	const { t } = useTranslation();

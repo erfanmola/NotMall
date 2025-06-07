@@ -7,8 +7,8 @@ import { IoClose } from "react-icons/io5";
 import { invokeHapticFeedbackImpact } from "../utils/telegram";
 import { useCartStore } from "../stores/useCartStore";
 import { useItemsStore } from "../stores/useItemsStore";
-import { useTranslation } from "react-i18next";
 import { Drawer } from "vaul";
+import { useTranslation } from "../i18n/i18nProvider";
 
 const ModalCart: FC<{
 	isOpen: boolean;
@@ -109,7 +109,7 @@ const ModalCart: FC<{
 				</div>
 			</div>
 		);
-	}, [cart, items]);
+	}, [cart, items, t]);
 
 	return (
 		<Drawer.Root open={isOpen} onOpenChange={setOpen}>

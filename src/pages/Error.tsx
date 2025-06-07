@@ -3,8 +3,8 @@ import "./Error.scss";
 import { BiErrorAlt } from "react-icons/bi";
 import { useEffect, type FC } from "react";
 import { PiAlienLight } from "react-icons/pi";
-import { useTranslation } from "react-i18next";
 import { invokeHapticFeedbackNotification } from "../utils/telegram";
+import { useTranslation } from "../i18n/i18nProvider";
 
 type PageErrorProps = {
 	title?: string;

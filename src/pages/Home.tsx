@@ -18,7 +18,6 @@ import {
 	type SetStateAction,
 } from "react";
 import { useItemsStore, type Item } from "../stores/useItemsStore";
-import { useTranslation } from "react-i18next";
 import ImageLoader from "../components/ImageLoader";
 import { ShimmerThumbnail, ShimmerTitle } from "react-shimmer-effects";
 import { invokeHapticFeedbackImpact } from "../utils/telegram";
@@ -27,7 +26,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { createPortal } from "react-dom";
 import { Product } from "./Product";
 import { Flip } from "gsap/all";
-import { motionMultiplier } from "../stores/useSettingsStore";
+import { motionMultiplier, useSettingsStore } from "../stores/useSettingsStore";
 import BottomBar from "../components/BottomBar";
 import { Pagination } from "swiper/modules";
 import { useCartStore } from "../stores/useCartStore";
@@ -37,6 +36,8 @@ import ModalCart from "../modals/Cart";
 import { SectionError } from "./Error";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "../i18n/i18nProvider";
+import { lottieAnimations } from "../utils/lottie";
 
 const Item: FC<{ item: Item }> = ({ item }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -230,6 +231,7 @@ const PageHome = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const lp = useLaunchParams();
 	const navigate = useNavigate();
+	const { settings } = useSettingsStore();
 
 	const itemsList = useMemo(() => {
 		if (!items) return items;
@@ -322,7 +324,7 @@ const PageHome = () => {
 				</div>
 			</header>
 		);
-	}, [search, searchQuery, cart, onClickButtonCart, onClickButtonSearch]);
+	}, [search, searchQuery, cart, onClickButtonCart, onClickButtonSearch, t]);
 
 	const renderContent = useMemo(() => {
 		if (loading) {
@@ -343,10 +345,14 @@ const PageHome = () => {
 		}
 
 		if (itemsList) {
-			if (itemsList.length === 0) {
+			if (itemsList.length === 0 || settings.emptyItems.enabled) {
 				return (
 					<div className="container-grid-items-home-not-found">
-						<LottiePlayer src="/assets/lottie/chick.json" autoplay />
+						<LottiePlayer
+							src={lottieAnimations.chick.url}
+							fallback={<span>{lottieAnimations.chick.emoji}</span>}
+							autoplay
+						/>
 						<h2>
 							{search
 								? t("pages.home.search.notFound.title")
@@ -393,7 +399,7 @@ const PageHome = () => {
 				description={t("pages.error.data.error.description")}
 			/>
 		);
-	}, [loading, itemsList, search]);
+	}, [loading, itemsList, search, settings.emptyItems.enabled, t]);
 
 	const renderBuyButton = useMemo(() => {
 		if (items && Object.keys(cart).length > 0) {
@@ -410,7 +416,7 @@ const PageHome = () => {
 				</div>
 			);
 		}
-	}, [cart, items, totalPrice]);
+	}, [cart, items, totalPrice, t]);
 
 	return (
 		<>
