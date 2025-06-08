@@ -133,10 +133,11 @@ export const Product: FC<ProductProps> = ({
 	const onClickButtonBuyNow = useCallback(async () => {
 		invokeHapticFeedbackImpact("medium");
 		setPaymentEnabled(false);
-		const payment = await handlePayment();
+		const payment = await handlePayment(item.price);
 		setPaymentEnabled(true);
+		if (payment === undefined) return;
 		setPaymentOverlay(payment ? "success" : "failed");
-	}, []);
+	}, [item.price]);
 
 	useEffect(() => {
 		if (!containerRef.current) return;

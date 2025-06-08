@@ -27,8 +27,8 @@ export const handlePayment = async (amount = 10_000) => {
 	await tonConnectUI.connectionRestored;
 
 	if (!tonConnectUI.connected) {
-		tonConnectUI.openModal();
-		return;
+		await tonConnectUI.openModal();
+		return undefined;
 	}
 
 	try {
@@ -37,7 +37,11 @@ export const handlePayment = async (amount = 10_000) => {
 			messages: [
 				{
 					address: import.meta.env.VITE_DESTINATION_WALLET,
-					amount: (amount * 1e9).toString(),
+					amount: (
+						amount *
+						1e9 *
+						Number.parseFloat(import.meta.env.VITE_NOT_RATIO ?? "1")
+					).toString(),
 					payload: "8===D",
 				},
 			],

@@ -277,8 +277,9 @@ const PageHome = () => {
 	const onClickButtonBuy = useCallback(async () => {
 		invokeHapticFeedbackImpact("medium");
 		setPaymentEnabled(false);
-		const payment = await handlePayment();
+		const payment = await handlePayment(totalPrice);
 		setPaymentEnabled(true);
+		if (payment === undefined) return;
 		setPaymentOverlay(payment ? "success" : "failed");
 	}, []);
 
