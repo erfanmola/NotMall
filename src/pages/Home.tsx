@@ -8,6 +8,7 @@ import {
 } from "../components/Icons";
 
 import {
+	memo,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -41,7 +42,7 @@ import { lottieAnimations } from "../utils/lottie";
 import { handlePayment } from "../utils/payment";
 import PaymentOverlay from "../components/PaymentOverlay";
 
-const Item: FC<{ item: Item }> = ({ item }) => {
+const Item: FC<{ item: Item }> = memo(({ item }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const headerRef = useRef<HTMLElement>(null);
 	const carouselImageRef = useRef<HTMLDivElement>(null);
@@ -166,7 +167,7 @@ const Item: FC<{ item: Item }> = ({ item }) => {
 				)}
 		</>
 	);
-};
+});
 
 const SearchBar: FC<{
 	query: string;
@@ -255,16 +256,16 @@ const PageHome = () => {
 		return items;
 	}, [items, searchQuery, searchQuery]);
 
-	const onClickButtonSearch = useCallback(() => {
+	const onClickButtonSearch = () => {
 		invokeHapticFeedbackImpact("light");
 		setSearch(true);
-	}, []);
+	};
 
-	const onClickButtonCart = useCallback(() => {
+	const onClickButtonCart = () => {
 		if (!items) return;
 		invokeHapticFeedbackImpact("light");
 		setModalCart(true);
-	}, [items]);
+	};
 
 	const totalPrice = useMemo(() => {
 		if (!items) return 0;
@@ -274,14 +275,14 @@ const PageHome = () => {
 		);
 	}, [cart, items]);
 
-	const onClickButtonBuy = useCallback(async () => {
+	const onClickButtonBuy = async () => {
 		invokeHapticFeedbackImpact("medium");
 		setPaymentEnabled(false);
 		const payment = await handlePayment(totalPrice);
 		setPaymentEnabled(true);
 		if (payment === undefined) return;
 		setPaymentOverlay(payment ? "success" : "failed");
-	}, []);
+	};
 
 	useEffect(() => {
 		if (
@@ -334,7 +335,23 @@ const PageHome = () => {
 				</div>
 			</header>
 		);
-	}, [search, searchQuery, cart, onClickButtonCart, onClickButtonSearch, t]);
+	}, [search, searchQuery, cart, t, onClickButtonSearch, onClickButtonCart]);
+
+	const renderItems = useMemo(() => {
+		if (!itemsList) return;
+		return (
+			<VirtuosoGrid
+				totalCount={itemsList.length}
+				overscan={{
+					main: 2,
+					reverse: 2,
+				}}
+				className="container-grid-items-home"
+				listClassName="container-items-home"
+				itemContent={(index) => <Item item={itemsList[index]} />}
+			/>
+		);
+	}, [itemsList]);
 
 	const renderContent = useMemo(() => {
 		if (loading) {
@@ -377,30 +394,7 @@ const PageHome = () => {
 				);
 			}
 
-			// if (items.length <= 12) {
-			// 	return (
-			// 		<div className="container-grid-items-home">
-			// 			<div className="container-items-home">
-			// 				{items.map((item, index) => (
-			// 					<Item item={item} key={index} />
-			// 				))}
-			// 			</div>
-			// 		</div>
-			// 	);
-			// } else {
-			return (
-				<VirtuosoGrid
-					totalCount={itemsList.length}
-					overscan={{
-						main: 2,
-						reverse: 2,
-					}}
-					className="container-grid-items-home"
-					listClassName="container-items-home"
-					itemContent={(index) => <Item item={itemsList[index]} />}
-				/>
-			);
-			// }
+			return <>{renderItems}</>;
 		}
 
 		return (
@@ -412,7 +406,7 @@ const PageHome = () => {
 	}, [loading, itemsList, search, settings.emptyItems.enabled, t]);
 
 	const renderBuyButton = useMemo(() => {
-		if (items && Object.keys(cart).length > 0) {
+		if (itemsList && itemsList.length > 0 && Object.keys(cart).length > 0) {
 			return (
 				<div id="container-action-buttons" className="container-buy-button">
 					<div
@@ -431,7 +425,7 @@ const PageHome = () => {
 				</div>
 			);
 		}
-	}, [cart, items, totalPrice, t]);
+	}, [cart, itemsList, totalPrice, t]);
 
 	const renderPaymentOverlay = useMemo(() => {
 		if (!paymentOverlay) return;

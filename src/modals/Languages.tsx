@@ -1,5 +1,11 @@
 import "./Languages.scss";
-import { useMemo, type Dispatch, type FC, type SetStateAction } from "react";
+import {
+	memo,
+	useMemo,
+	type Dispatch,
+	type FC,
+	type SetStateAction,
+} from "react";
 
 import { IoClose } from "react-icons/io5";
 import { invokeHapticFeedbackImpact, postEvent } from "../utils/telegram";
@@ -17,7 +23,7 @@ import { FaCheck } from "react-icons/fa6";
 const ModalLanguages: FC<{
 	isOpen: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ isOpen, setOpen }) => {
+}> = memo(({ isOpen, setOpen }) => {
 	const { t, language, setLanguage } = useTranslation();
 	const { settings, setSettings } = useSettingsStore();
 
@@ -99,6 +105,6 @@ const ModalLanguages: FC<{
 			</Drawer.Portal>
 		</Drawer.Root>
 	);
-};
+});
 
 export default ModalLanguages;

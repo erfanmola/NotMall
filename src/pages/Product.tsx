@@ -1,5 +1,6 @@
 import "./Product.scss";
 import {
+	memo,
 	useCallback,
 	useEffect,
 	useMemo,
@@ -40,282 +41,284 @@ type ProductProps = {
 	activeSlideState?: [number, Dispatch<SetStateAction<number>>];
 };
 
-export const Product: FC<ProductProps> = ({
-	item,
-	onClose,
-	standalone,
-	activeSlideState,
-}) => {
-	const containerRef = useRef<HTMLDivElement>(null);
-	const lightboxRef = useRef<HTMLDivElement>(null);
-	const [swiper, setSwiper] = useState<any>(null);
-	const [lightbox, setLightBox] = useState(false);
-	const navigate = useNavigate();
-	const { t } = useTranslation();
-	const { cart, increment, decrement } = useCartStore();
-	const [paymentEnabled, setPaymentEnabled] = useState(true);
-	const [paymentOverlay, setPaymentOverlay] = useState<
-		"success" | "failed" | undefined
-	>(undefined);
+export const Product: FC<ProductProps> = memo(
+	({ item, onClose, standalone, activeSlideState }) => {
+		const containerRef = useRef<HTMLDivElement>(null);
+		const lightboxRef = useRef<HTMLDivElement>(null);
+		const [swiper, setSwiper] = useState<any>(null);
+		const [lightbox, setLightBox] = useState(false);
+		const navigate = useNavigate();
+		const { t } = useTranslation();
+		const { cart, increment, decrement } = useCartStore();
+		const [paymentEnabled, setPaymentEnabled] = useState(true);
+		const [paymentOverlay, setPaymentOverlay] = useState<
+			"success" | "failed" | undefined
+		>(undefined);
 
-	const [activeSlide, setActiveSlide] = activeSlideState ?? [
-		undefined,
-		undefined,
-	];
-	const [activeImage, setActiveImage] = useState(activeSlide ?? 0);
+		const [activeSlide, setActiveSlide] = activeSlideState ?? [
+			undefined,
+			undefined,
+		];
+		const [activeImage, setActiveImage] = useState(activeSlide ?? 0);
 
-	const onBackButton = useCallback(() => {
-		navigate("/");
-		onClose?.();
-	}, [navigate, onClose]);
+		const onBackButton = useCallback(() => {
+			invokeHapticFeedbackImpact("light");
+			navigate("/");
+			onClose?.();
+		}, [navigate, onClose]);
 
-	const onClickShare = useCallback(() => {
-		invokeHapticFeedbackImpact("light");
-		postEvent("web_app_open_tg_link", {
-			path_full: `/share/url?url=https://t.me/${import.meta.env.VITE_BOT_USERNAME}/${import.meta.env.VITE_MINIAPP_SLUG}?startapp=product-${item.id}&text=${encodeURI(t("pages.product.share"))}`,
-		});
-	}, []);
-
-	const onClickLightbox = useCallback(() => {
-		invokeHapticFeedbackImpact("soft");
-
-		if (lightbox) {
-			const imageElement = document.querySelector(
-				"#container-lightbox > div.image-loader",
-			);
-			if (!imageElement) return;
-
-			const flipState = Flip.getState(imageElement);
-			document
-				.querySelector("#container-image-product")
-				?.appendChild(imageElement);
-			Flip.from(flipState, {
-				duration: 0.25 * motionMultiplier,
-				ease: "none",
+		const onClickShare = () => {
+			invokeHapticFeedbackImpact("light");
+			postEvent("web_app_open_tg_link", {
+				path_full: `/share/url?url=https://t.me/${import.meta.env.VITE_BOT_USERNAME}/${import.meta.env.VITE_MINIAPP_SLUG}?startapp=product-${item.id}&text=${encodeURI(t("pages.product.share"))}`,
 			});
+		};
 
-			setLightBox(false);
-		} else {
-			const imageElement = document.querySelector(
-				"#container-image-product > div.image-loader",
-			);
-			if (!imageElement) return;
+		const onClickLightbox = () => {
+			invokeHapticFeedbackImpact("soft");
 
-			setLightBox(true);
+			if (lightbox) {
+				const imageElement = document.querySelector(
+					"#container-lightbox > div.image-loader",
+				);
+				if (!imageElement) return;
 
-			setTimeout(() => {
 				const flipState = Flip.getState(imageElement);
-				lightboxRef.current?.appendChild(imageElement);
+				document
+					.querySelector("#container-image-product")
+					?.appendChild(imageElement);
 				Flip.from(flipState, {
 					duration: 0.25 * motionMultiplier,
 					ease: "none",
 				});
-			});
-		}
-	}, [lightbox, lightboxRef]);
 
-	const onClickButtonAddToCart = useCallback(() => {
-		if (cart[item.id.toLocaleString()]) return;
-		invokeHapticFeedbackImpact("soft");
-		increment(item.id.toString());
-	}, [cart, item.id]);
+				setLightBox(false);
+			} else {
+				const imageElement = document.querySelector(
+					"#container-image-product > div.image-loader",
+				);
+				if (!imageElement) return;
 
-	const onClickDecrement = useCallback(() => {
-		invokeHapticFeedbackImpact("soft");
-		decrement(item.id.toLocaleString());
-	}, [decrement, item.id]);
+				setLightBox(true);
 
-	const onClickIncrement = useCallback(() => {
-		invokeHapticFeedbackImpact("soft");
-		increment(item.id.toLocaleString());
-	}, [increment, item.id]);
-
-	const onClickButtonBuyNow = useCallback(async () => {
-		invokeHapticFeedbackImpact("medium");
-		setPaymentEnabled(false);
-		const payment = await handlePayment(item.price);
-		setPaymentEnabled(true);
-		if (payment === undefined) return;
-		setPaymentOverlay(payment ? "success" : "failed");
-	}, [item.price]);
-
-	useEffect(() => {
-		if (!containerRef.current) return;
-
-		window.history.replaceState(null, "", `/product/${item.id}`);
-
-		postEvent("web_app_setup_back_button", {
-			is_visible: true,
-		});
-
-		on("back_button_pressed", onBackButton);
-
-		invokeHapticFeedbackImpact("medium");
-
-		if (!standalone) {
-			containerRef.current.classList.add("show");
-		}
-
-		return () => {
-			postEvent("web_app_setup_back_button", {
-				is_visible: false,
-			});
-
-			off("back_button_pressed", onBackButton);
+				setTimeout(() => {
+					const flipState = Flip.getState(imageElement);
+					lightboxRef.current?.appendChild(imageElement);
+					Flip.from(flipState, {
+						duration: 0.25 * motionMultiplier,
+						ease: "none",
+					});
+				});
+			}
 		};
-	}, []);
 
-	useEffect(() => {
-		setActiveSlide?.(activeImage);
-		swiper?.slideTo(activeImage);
-	}, [activeImage]);
+		const onClickButtonAddToCart = () => {
+			if (cart[item.id.toLocaleString()]) return;
+			invokeHapticFeedbackImpact("soft");
+			increment(item.id.toString());
+		};
 
-	const renderPaymentOverlay = useMemo(() => {
-		if (!paymentOverlay) return;
-		return (
-			<PaymentOverlay status={paymentOverlay} setStatus={setPaymentOverlay} />
-		);
-	}, [paymentOverlay]);
+		const onClickDecrement = () => {
+			invokeHapticFeedbackImpact("soft");
+			decrement(item.id.toLocaleString());
+		};
 
-	return (
-		<>
-			<div
-				ref={containerRef}
-				id="container-product"
-				className={`${standalone ? "standalone" : "popup"}`}
-			>
-				<header
-					className={`${!standalone ? "animate__animated animate__fadeInUp" : ""}`}
-				>
-					<h1>{item.name}</h1>
+		const onClickIncrement = () => {
+			invokeHapticFeedbackImpact("soft");
+			increment(item.id.toLocaleString());
+		};
 
-					<div>
-						<div onClick={onClickShare}>
-							<IconShare />
-						</div>
-					</div>
-				</header>
+		const onClickButtonBuyNow = async () => {
+			invokeHapticFeedbackImpact("medium");
+			setPaymentEnabled(false);
+			const payment = await handlePayment(item.price);
+			setPaymentEnabled(true);
+			if (payment === undefined) return;
+			setPaymentOverlay(payment ? "success" : "failed");
+		};
 
-				<p
-					className={`${!standalone ? "animate__animated animate__fadeInUp" : ""}`}
-				>
-					{item.description}
-				</p>
+		useEffect(() => {
+			if (!containerRef.current) return;
 
-				<ul
-					className={`${!standalone ? "animate__animated animate__fadeInUp" : ""}`}
-				>
-					<li>
-						{item.price.toLocaleString()}{" "}
-						<span>{priceSymbols[item.currency.toLowerCase()]}</span>
-					</li>
+			window.history.replaceState(null, "", `/product/${item.id}`);
 
-					<li>
-						{item.left.toLocaleString()}{" "}
-						<span>{t("pages.product.inStock")}</span>
-					</li>
+			postEvent("web_app_setup_back_button", {
+				is_visible: true,
+			});
 
-					{Object.entries(item.tags).map(([key, tag]) => {
-						const data = tag.split(" ");
+			on("back_button_pressed", onBackButton);
 
-						return (
-							<li key={key}>
-								{data.length === 2 ? (
-									<>
-										{data[0]} <span>{data[1]}</span>
-									</>
-								) : (
-									tag
-								)}
-							</li>
-						);
-					})}
-				</ul>
+			invokeHapticFeedbackImpact("medium");
 
-				<div id="container-image-product" onClick={onClickLightbox}>
-					{standalone && <ImageLoader src={item.images[activeImage]} />}
-				</div>
+			if (!standalone) {
+				containerRef.current.classList.add("show");
+			}
 
-				<div id="container-gallery-product">
-					<Swiper
-						onSwiper={setSwiper}
-						slidesPerView={3.5}
-						spaceBetween={8}
-						slidesOffsetAfter={16}
-						initialSlide={activeImage}
-						className={`${!standalone ? "animate__animated animate__fadeIn" : ""}`}
-					>
-						{item.images.map((image, index) => (
-							<SwiperSlide
-								key={index}
-								onClick={() => {
-									invokeHapticFeedbackImpact("light");
-									setActiveImage(index);
-								}}
-							>
-								<ImageLoader
-									containerAttrs={{
-										className: `${index === activeImage ? "active" : ""}`,
-									}}
-									src={image}
-								/>
-							</SwiperSlide>
-						))}
-					</Swiper>
-				</div>
+			return () => {
+				postEvent("web_app_setup_back_button", {
+					is_visible: false,
+				});
 
-				<div
-					id="container-action-buttons"
+				off("back_button_pressed", onBackButton);
+			};
+		}, []);
+
+		useEffect(() => {
+			setActiveSlide?.(activeImage);
+			swiper?.slideTo(activeImage);
+		}, [activeImage]);
+
+		const renderPaymentOverlay = useMemo(() => {
+			if (!paymentOverlay) return;
+			return (
+				<PaymentOverlay status={paymentOverlay} setStatus={setPaymentOverlay} />
+			);
+		}, [paymentOverlay]);
+
+		const renderSwiper = useMemo(() => {
+			return (
+				<Swiper
+					onSwiper={setSwiper}
+					slidesPerView={3.5}
+					spaceBetween={8}
+					slidesOffsetAfter={16}
+					initialSlide={activeImage}
 					className={`${!standalone ? "animate__animated animate__fadeIn" : ""}`}
 				>
-					<div
-						className="secondary"
-						id="container-button-addToCart"
-						onClick={onClickButtonAddToCart}
+					{item.images.map((image, index) => (
+						<SwiperSlide
+							key={index}
+							onClick={() => {
+								invokeHapticFeedbackImpact("light");
+								setActiveImage(index);
+							}}
+						>
+							<ImageLoader
+								containerAttrs={{
+									className: `${index === activeImage ? "active" : ""}`,
+								}}
+								src={image}
+							/>
+						</SwiperSlide>
+					))}
+				</Swiper>
+			);
+		}, [activeImage, standalone, item.images]);
+
+		return (
+			<>
+				<div
+					ref={containerRef}
+					id="container-product"
+					className={`${standalone ? "standalone" : "popup"}`}
+				>
+					<header
+						className={`${!standalone ? "animate__animated animate__fadeInUp" : ""}`}
 					>
-						{cart[item.id] ? (
-							<div>
-								<button onClick={onClickDecrement}>
-									<FaMinus />
-								</button>
-								<SlotCounter
-									autoAnimationStart={false}
-									value={cart[item.id]}
-									duration={0.125 * motionMultiplier}
-									sequentialAnimationMode
-								/>
-								<button onClick={onClickIncrement}>
-									<FaPlus />
-								</button>
+						<h1>{item.name}</h1>
+
+						<div>
+							<div onClick={onClickShare}>
+								<IconShare />
 							</div>
-						) : (
-							<span>{t("pages.product.addToCart")}</span>
-						)}
+						</div>
+					</header>
+
+					<p
+						className={`${!standalone ? "animate__animated animate__fadeInUp" : ""}`}
+					>
+						{item.description}
+					</p>
+
+					<ul
+						className={`${!standalone ? "animate__animated animate__fadeInUp" : ""}`}
+					>
+						<li>
+							{item.price.toLocaleString()}{" "}
+							<span>{priceSymbols[item.currency.toLowerCase()]}</span>
+						</li>
+
+						<li>
+							{item.left.toLocaleString()}{" "}
+							<span>{t("pages.product.inStock")}</span>
+						</li>
+
+						{Object.entries(item.tags).map(([key, tag]) => {
+							const data = tag.split(" ");
+
+							return (
+								<li key={key}>
+									{data.length === 2 ? (
+										<>
+											{data[0]} <span>{data[1]}</span>
+										</>
+									) : (
+										tag
+									)}
+								</li>
+							);
+						})}
+					</ul>
+
+					<div id="container-image-product" onClick={onClickLightbox}>
+						{standalone && <ImageLoader src={item.images[activeImage]} />}
 					</div>
 
+					<div id="container-gallery-product">{renderSwiper}</div>
+
 					<div
-						className={["primary", paymentEnabled ? "enabled" : "disabled"]
-							.filter(Boolean)
-							.join(" ")}
-						onClick={onClickButtonBuyNow}
+						id="container-action-buttons"
+						className={`${!standalone ? "animate__animated animate__fadeIn" : ""}`}
 					>
-						<span>{t("pages.product.buyNow")}</span>
+						<div
+							className="secondary"
+							id="container-button-addToCart"
+							onClick={onClickButtonAddToCart}
+						>
+							{cart[item.id] ? (
+								<div>
+									<button onClick={onClickDecrement}>
+										<FaMinus />
+									</button>
+									<SlotCounter
+										autoAnimationStart={false}
+										value={cart[item.id]}
+										duration={0.125 * motionMultiplier}
+										sequentialAnimationMode
+									/>
+									<button onClick={onClickIncrement}>
+										<FaPlus />
+									</button>
+								</div>
+							) : (
+								<span>{t("pages.product.addToCart")}</span>
+							)}
+						</div>
+
+						<div
+							className={["primary", paymentEnabled ? "enabled" : "disabled"]
+								.filter(Boolean)
+								.join(" ")}
+							onClick={onClickButtonBuyNow}
+						>
+							<span>{t("pages.product.buyNow")}</span>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{lightbox && (
-				<div
-					ref={lightboxRef}
-					id="container-lightbox"
-					onClick={onClickLightbox}
-				></div>
-			)}
+				{lightbox && (
+					<div
+						ref={lightboxRef}
+						id="container-lightbox"
+						onClick={onClickLightbox}
+					></div>
+				)}
 
-			<>{renderPaymentOverlay}</>
-		</>
-	);
-};
+				<>{renderPaymentOverlay}</>
+			</>
+		);
+	},
+);
 
 const PageProduct = () => {
 	const { items, loading, fetchItems } = useItemsStore();

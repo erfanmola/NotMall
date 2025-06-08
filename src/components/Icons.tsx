@@ -1,6 +1,6 @@
-import type { FC } from "react";
+import { memo, type FC } from "react";
 
-const IconSearch: FC<React.SVGProps<any>> = (props) => {
+const IconSearch: FC<React.SVGProps<any>> = memo((props) => {
 	return (
 		<svg
 			viewBox="0 0 20 20"
@@ -14,9 +14,9 @@ const IconSearch: FC<React.SVGProps<any>> = (props) => {
 			/>
 		</svg>
 	);
-};
+});
 
-const IconBasket: FC<React.SVGProps<any>> = (props) => {
+const IconBasket: FC<React.SVGProps<any>> = memo((props) => {
 	return (
 		<svg
 			viewBox="0 0 24 22"
@@ -30,9 +30,9 @@ const IconBasket: FC<React.SVGProps<any>> = (props) => {
 			/>
 		</svg>
 	);
-};
+});
 
-const IconNotcoinCircle: FC<React.SVGProps<any>> = (props) => {
+const IconNotcoinCircle: FC<React.SVGProps<any>> = memo((props) => {
 	return (
 		<svg
 			viewBox="0 0 25 24"
@@ -56,9 +56,9 @@ const IconNotcoinCircle: FC<React.SVGProps<any>> = (props) => {
 			/>
 		</svg>
 	);
-};
+});
 
-const IconShare: FC<React.SVGProps<any>> = (props) => {
+const IconShare: FC<React.SVGProps<any>> = memo((props) => {
 	return (
 		<svg
 			viewBox="0 0 23 19"
@@ -72,9 +72,9 @@ const IconShare: FC<React.SVGProps<any>> = (props) => {
 			/>
 		</svg>
 	);
-};
+});
 
-const IconSearchInput: FC<React.SVGProps<any>> = (props) => {
+const IconSearchInput: FC<React.SVGProps<any>> = memo((props) => {
 	return (
 		<svg
 			viewBox="0 0 18 18"
@@ -88,9 +88,9 @@ const IconSearchInput: FC<React.SVGProps<any>> = (props) => {
 			/>
 		</svg>
 	);
-};
+});
 
-const IconCloseCircle: FC<React.SVGProps<any>> = (props) => {
+const IconCloseCircle: FC<React.SVGProps<any>> = memo((props) => {
 	return (
 		<svg
 			viewBox="0 0 16 16"
@@ -104,7 +104,7 @@ const IconCloseCircle: FC<React.SVGProps<any>> = (props) => {
 			/>
 		</svg>
 	);
-};
+});
 
 export {
 	IconSearch,

@@ -1,6 +1,6 @@
 import "./Profile.scss";
 
-import { useEffect, useMemo, type FC } from "react";
+import { memo, useEffect, useMemo, type FC } from "react";
 
 import BottomBar from "../components/BottomBar";
 import { FaCircleUser } from "react-icons/fa6";
@@ -19,7 +19,7 @@ import { SectionError } from "./Error";
 import { useSettingsStore } from "../stores/useSettingsStore";
 import { useTranslation } from "../i18n/i18nProvider";
 
-const Item: FC<{ item: HistoryItem }> = ({ item }) => {
+const Item: FC<{ item: HistoryItem }> = memo(({ item }) => {
 	if (!item.product) return;
 
 	return (
@@ -39,7 +39,7 @@ const Item: FC<{ item: HistoryItem }> = ({ item }) => {
 			</div>
 		</div>
 	);
-};
+});
 
 const PageProfile = () => {
 	const { t } = useTranslation();

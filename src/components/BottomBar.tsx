@@ -1,6 +1,6 @@
 import "./BottomBar.scss";
 
-import type { FC } from "react";
+import { memo, type FC } from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { IconNotcoinCircle } from "./Icons";
 import ImageLoader from "./ImageLoader";
@@ -8,7 +8,7 @@ import { NavLink } from "react-router";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import { useTranslation } from "../i18n/i18nProvider";
 
-const BottomBar: FC = () => {
+const BottomBar: FC = memo(() => {
 	const { t } = useTranslation();
 	const lp = useLaunchParams();
 
@@ -35,6 +35,6 @@ const BottomBar: FC = () => {
 			</div>
 		</div>
 	);
-};
+});
 
 export default BottomBar;

@@ -1,5 +1,5 @@
 import "./ImageLoader.scss";
-import { useEffect, useRef, useState, type FC, type Ref } from "react";
+import { memo, useEffect, useRef, useState, type FC, type Ref } from "react";
 import { ShimmerThumbnail } from "react-shimmer-effects";
 import { simulateDelay } from "../stores/useSettingsStore";
 
@@ -8,7 +8,7 @@ const ImageLoader: FC<{
 	ref?: Ref<HTMLDivElement>;
 	containerAttrs?: React.HTMLAttributes<HTMLDivElement>;
 	imageAttrs?: React.ImgHTMLAttributes<HTMLImageElement>;
-}> = (props) => {
+}> = memo((props) => {
 	const imgRef = useRef<HTMLImageElement>(null);
 	const [loaded, setLoaded] = useState<boolean | null>(null);
 
@@ -44,6 +44,6 @@ const ImageLoader: FC<{
 			<img ref={imgRef} src={props.src} {...props.imageAttrs} />
 		</div>
 	);
-};
+});
 
 export default ImageLoader;

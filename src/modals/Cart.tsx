@@ -1,5 +1,11 @@
 import "./Cart.scss";
-import { useMemo, type Dispatch, type FC, type SetStateAction } from "react";
+import {
+	memo,
+	useMemo,
+	type Dispatch,
+	type FC,
+	type SetStateAction,
+} from "react";
 
 import { FaMinus } from "react-icons/fa6";
 import ImageLoader from "../components/ImageLoader";
@@ -13,7 +19,7 @@ import { useTranslation } from "../i18n/i18nProvider";
 const ModalCart: FC<{
 	isOpen: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ isOpen, setOpen }) => {
+}> = memo(({ isOpen, setOpen }) => {
 	const { cart, remove } = useCartStore();
 	const { t } = useTranslation();
 	const { items } = useItemsStore();
@@ -129,6 +135,6 @@ const ModalCart: FC<{
 			</Drawer.Portal>
 		</Drawer.Root>
 	);
-};
+});
 
 export default ModalCart;

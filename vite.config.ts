@@ -44,6 +44,7 @@ export default defineConfig((config) => {
 								/swiper/,
 								/vaul/,
 								/lottie-animation/,
+								/tc-/,
 							],
 						},
 						defaultExtractor: (content) =>

@@ -1,5 +1,6 @@
 import "./Settings.scss";
 import {
+	memo,
 	useMemo,
 	useState,
 	type Dispatch,
@@ -20,7 +21,7 @@ import PaymentOverlay from "../components/PaymentOverlay";
 const ModalSettings: FC<{
 	isOpen: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ isOpen, setOpen }) => {
+}> = memo(({ isOpen, setOpen }) => {
 	const { t, language } = useTranslation();
 	const { settings, setSettings } = useSettingsStore();
 	const [languagesModal, setLanguagesModal] = useState(false);
@@ -194,6 +195,6 @@ const ModalSettings: FC<{
 			<>{renderPaymentOverlay}</>
 		</>
 	);
-};
+});
 
 export default ModalSettings;
