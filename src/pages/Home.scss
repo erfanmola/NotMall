@@ -352,16 +352,19 @@
 		padding: 0.4375rem 0.625rem;
 		gap: 0.375rem;
 		flex-shrink: 0;
+		overflow: hidden;
 
 		>svg:first-child {
 			height: 1.375rem;
 			opacity: 0.2;
+			flex-shrink: 0;
 		}
 
 		>svg:last-child {
 			height: 1rem;
 			opacity: 0.3;
 			cursor: pointer;
+			flex-shrink: 0;
 		}
 
 		>input {
@@ -369,6 +372,7 @@
 			flex-grow: 1;
 			caret-color: rgba(var(--text-color-rgb), 0.50);
 			font-size: 1.0625rem;
+			min-width: 5rem;
 
 			&::placeholder {
 				color: rgba(var(--text-color-rgb), 0.50);
@@ -378,6 +382,7 @@
 	}
 
 	>button {
+		display: flex;
 		cursor: pointer;
 		touch-action: none;
 		font-size: 1.125rem;
