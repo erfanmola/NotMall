@@ -64,7 +64,7 @@ const translation = {
 		purchase: {
 			success: {
 				title: "You Got It!",
-				description: "Your purchase is one the way",
+				description: "Your purchase is on the way",
 				button: "Awesome",
 			},
 			failed: {
@@ -99,6 +99,9 @@ const translation = {
 				},
 				empty: {
 					title: "Simulate Empty Items",
+				},
+				payment: {
+					title: "Simulate Successful Payment",
 				},
 				reload: "The app needs to be reloaded for the changes to take effect.",
 			},

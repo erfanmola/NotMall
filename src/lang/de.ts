@@ -101,6 +101,9 @@ const translation = {
 				empty: {
 					title: "Leere Artikel simulieren",
 				},
+				payment: {
+					title: "Erfolgreiche Zahlung simulieren",
+				},
 				reload:
 					"Die App muss neu geladen werden, damit die Änderungen wirksam werden.",
 			},

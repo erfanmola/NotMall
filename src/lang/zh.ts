@@ -99,6 +99,9 @@ const translation = {
 				empty: {
 					title: "模拟空商品",
 				},
+				payment: {
+					title: "模拟成功支付",
+				},
 				reload: "需要重新加载应用以使更改生效。",
 			},
 		},

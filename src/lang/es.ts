@@ -100,6 +100,9 @@ const translation = {
 				empty: {
 					title: "Simular artículos vacíos",
 				},
+				payment: {
+					title: "Simular pago exitoso",
+				},
 				reload:
 					"La aplicación necesita recargarse para que los cambios surtan efecto.",
 			},
