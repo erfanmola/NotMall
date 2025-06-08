@@ -173,6 +173,7 @@ const App = () => {
 		return (
 			<>
 				<RouterProvider router={router} />
+				<div id="container-modals" />
 				<ModalSettings isOpen={settingsModal} setOpen={setSettingsModal} />
 			</>
 		);

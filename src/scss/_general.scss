@@ -47,11 +47,12 @@ body,
 	flex-direction: column;
 	position: relative;
 	min-height: max(var(--ptg-viewport-height), 100vh);
+	pointer-events: auto !important;
 }
 
-#root {
-	isolation: isolate;
-}
+// #root {
+// 	isolation: isolate;
+// }
 
 body {
 	background-color: var(--bg-color);
@@ -167,4 +168,12 @@ main {
 			}
 		}
 	}
+}
+
+#tc-widget-root {
+	z-index: 10009;
+}
+
+body>canvas {
+	z-index: 10011 !important;
 }

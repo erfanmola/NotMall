@@ -175,7 +175,11 @@ const ModalSettings: FC<{
 			<Drawer.Root open={isOpen} onOpenChange={setOpen}>
 				<Drawer.Portal>
 					<Drawer.Overlay className="vaul-overlay" />
-					<Drawer.Content className="vaul-content" aria-describedby={undefined}>
+					<Drawer.Content
+						className="vaul-content"
+						style={{ zIndex: "10005" }}
+						aria-describedby={undefined}
+					>
 						<Drawer.Title style={{ display: "none" }}>
 							{t("modals.settings.title")}
 						</Drawer.Title>
