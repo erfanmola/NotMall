@@ -372,7 +372,7 @@
 			flex-grow: 1;
 			caret-color: rgba(var(--text-color-rgb), 0.50);
 			font-size: 1.0625rem;
-			min-width: 5rem;
+			overflow: hidden;
 
 			&::placeholder {
 				color: rgba(var(--text-color-rgb), 0.50);
@@ -387,6 +387,7 @@
 		touch-action: none;
 		font-size: 1.125rem;
 		flex-shrink: 0;
+		min-width: max-content;
 	}
 }
 
