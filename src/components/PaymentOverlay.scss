@@ -1,0 +1,59 @@
+#container-payment-overlay {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	inset: 0;
+	background-color: rgba(var(--black-rgb), 0.7);
+	backdrop-filter: blur(8px);
+	color: var(--white);
+	padding: 1rem;
+	z-index: 1;
+
+	>div.lottie-animation {
+		width: 20rem;
+		height: 20rem;
+
+		>span {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			text-align: center;
+			align-items: center;
+			justify-content: center;
+			font-size: 16em;
+		}
+	}
+
+	>h1 {
+		padding-top: 1.5rem;
+		font-size: 2.25rem;
+		line-height: 2.25rem;
+		font-weight: 500;
+	}
+
+	>span {
+		padding-top: 0.75rem;
+		font-size: 1.0625rem;
+		line-height: 1.375rem;
+		padding-bottom: 3.75rem;
+	}
+
+	>button {
+		background-color: var(--white);
+		color: var(--black);
+		width: 100%;
+		height: 3.125rem;
+		border-radius: 0.75rem;
+		font-size: 1.0625rem;
+		font-weight: 500;
+		line-height: 1.375rem;
+		cursor: pointer;
+
+		&:focus,
+		&:active {
+			opacity: 0.75;
+		}
+	}
+}

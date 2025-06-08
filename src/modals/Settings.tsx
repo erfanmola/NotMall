@@ -15,6 +15,7 @@ import Switch from "../components/Switch";
 import { useSettingsStore } from "../stores/useSettingsStore";
 import { localeFlags, useTranslation } from "../i18n/i18nProvider";
 import ModalLanguages from "./Languages";
+import PaymentOverlay from "../components/PaymentOverlay";
 
 const ModalSettings: FC<{
 	isOpen: boolean;
@@ -23,6 +24,17 @@ const ModalSettings: FC<{
 	const { t, language } = useTranslation();
 	const { settings, setSettings } = useSettingsStore();
 	const [languagesModal, setLanguagesModal] = useState(false);
+
+	const [paymentOverlay, setPaymentOverlay] = useState<
+		"success" | "failed" | undefined
+	>(undefined);
+
+	const renderPaymentOverlay = useMemo(() => {
+		if (!paymentOverlay) return;
+		return (
+			<PaymentOverlay status={paymentOverlay} setStatus={setPaymentOverlay} />
+		);
+	}, [paymentOverlay]);
 
 	const renderContent = useMemo(() => {
 		return (
@@ -143,6 +155,15 @@ const ModalSettings: FC<{
 								/>
 							</div>
 						</div>
+
+						<div
+							onClick={() => {
+								setOpen(false);
+								setPaymentOverlay("success");
+							}}
+						>
+							<span>{t("modals.settings.sections.payment.title")}</span>
+						</div>
 					</section>
 				</div>
 			</div>
@@ -165,6 +186,8 @@ const ModalSettings: FC<{
 			</Drawer.Root>
 
 			<ModalLanguages isOpen={languagesModal} setOpen={setLanguagesModal} />
+
+			<>{renderPaymentOverlay}</>
 		</>
 	);
 };

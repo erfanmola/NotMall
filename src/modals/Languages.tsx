@@ -2,7 +2,7 @@ import "./Languages.scss";
 import { useMemo, type Dispatch, type FC, type SetStateAction } from "react";
 
 import { IoClose } from "react-icons/io5";
-import { invokeHapticFeedbackImpact } from "../utils/telegram";
+import { invokeHapticFeedbackImpact, postEvent } from "../utils/telegram";
 
 import { Drawer } from "vaul";
 import { useSettingsStore } from "../stores/useSettingsStore";
@@ -28,6 +28,17 @@ const ModalLanguages: FC<{
 			language: locale,
 		});
 		setLanguage(locale);
+
+		postEvent("web_app_open_popup", {
+			message: t("modals.settings.sections.reload"),
+			title: "",
+			buttons: [
+				{
+					id: "ok",
+					type: "ok",
+				},
+			],
+		});
 	};
 
 	const renderContent = useMemo(() => {

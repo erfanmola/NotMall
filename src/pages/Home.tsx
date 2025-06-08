@@ -38,6 +38,8 @@ import { useLaunchParams } from "@telegram-apps/sdk-react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "../i18n/i18nProvider";
 import { lottieAnimations } from "../utils/lottie";
+import { handlePayment } from "../utils/payment";
+import PaymentOverlay from "../components/PaymentOverlay";
 
 const Item: FC<{ item: Item }> = ({ item }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -232,6 +234,10 @@ const PageHome = () => {
 	const lp = useLaunchParams();
 	const navigate = useNavigate();
 	const { settings } = useSettingsStore();
+	const [paymentEnabled, setPaymentEnabled] = useState(true);
+	const [paymentOverlay, setPaymentOverlay] = useState<
+		"success" | "failed" | undefined
+	>(undefined);
 
 	const itemsList = useMemo(() => {
 		if (!items) return items;
@@ -268,9 +274,12 @@ const PageHome = () => {
 		);
 	}, [cart, items]);
 
-	const onClickButtonBuy = useCallback(() => {
-		// TODO: Implement this
-		console.log("Ok");
+	const onClickButtonBuy = useCallback(async () => {
+		invokeHapticFeedbackImpact("medium");
+		setPaymentEnabled(false);
+		const payment = await handlePayment();
+		setPaymentEnabled(true);
+		setPaymentOverlay(payment ? "success" : "failed");
 	}, []);
 
 	useEffect(() => {
@@ -405,7 +414,12 @@ const PageHome = () => {
 		if (items && Object.keys(cart).length > 0) {
 			return (
 				<div id="container-action-buttons" className="container-buy-button">
-					<div className="primary" onClick={onClickButtonBuy}>
+					<div
+						className={["primary", paymentEnabled ? "enabled" : "disabled"]
+							.filter(Boolean)
+							.join(" ")}
+						onClick={onClickButtonBuy}
+					>
 						<span>
 							{t("pages.product.buyFor", {
 								price: totalPrice.toLocaleString(),
@@ -417,6 +431,13 @@ const PageHome = () => {
 			);
 		}
 	}, [cart, items, totalPrice, t]);
+
+	const renderPaymentOverlay = useMemo(() => {
+		if (!paymentOverlay) return;
+		return (
+			<PaymentOverlay status={paymentOverlay} setStatus={setPaymentOverlay} />
+		);
+	}, [paymentOverlay]);
 
 	return (
 		<>
@@ -430,6 +451,8 @@ const PageHome = () => {
 				<BottomBar />
 
 				<>{renderBuyButton}</>
+
+				<>{renderPaymentOverlay}</>
 			</div>
 
 			<ModalCart isOpen={modalCart} setOpen={setModalCart} />

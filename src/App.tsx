@@ -167,6 +167,7 @@ const App = () => {
 
 		setTimeout(() => {
 			preloadLottieAnimations();
+			import("@tonconnect/ui");
 		}, 5e3);
 
 		return (

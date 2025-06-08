@@ -30,6 +30,8 @@ import { FaMinus, FaPlus } from "react-icons/fa6";
 import { priceSymbols } from "../utils/symbols";
 import { SectionError } from "./Error";
 import { useTranslation } from "../i18n/i18nProvider";
+import { handlePayment } from "../utils/payment";
+import PaymentOverlay from "../components/PaymentOverlay";
 
 type ProductProps = {
 	item: Item;
@@ -51,6 +53,10 @@ export const Product: FC<ProductProps> = ({
 	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const { cart, increment, decrement } = useCartStore();
+	const [paymentEnabled, setPaymentEnabled] = useState(true);
+	const [paymentOverlay, setPaymentOverlay] = useState<
+		"success" | "failed" | undefined
+	>(undefined);
 
 	const [activeSlide, setActiveSlide] = activeSlideState ?? [
 		undefined,
@@ -124,9 +130,12 @@ export const Product: FC<ProductProps> = ({
 		increment(item.id.toLocaleString());
 	}, [increment, item.id]);
 
-	const onClickButtonBuyNow = useCallback(() => {
-		// TODO: implement this
-		console.log("Ok");
+	const onClickButtonBuyNow = useCallback(async () => {
+		invokeHapticFeedbackImpact("medium");
+		setPaymentEnabled(false);
+		const payment = await handlePayment();
+		setPaymentEnabled(true);
+		setPaymentOverlay(payment ? "success" : "failed");
 	}, []);
 
 	useEffect(() => {
@@ -159,6 +168,13 @@ export const Product: FC<ProductProps> = ({
 		setActiveSlide?.(activeImage);
 		swiper?.slideTo(activeImage);
 	}, [activeImage]);
+
+	const renderPaymentOverlay = useMemo(() => {
+		if (!paymentOverlay) return;
+		return (
+			<PaymentOverlay status={paymentOverlay} setStatus={setPaymentOverlay} />
+		);
+	}, [paymentOverlay]);
 
 	return (
 		<>
@@ -276,7 +292,12 @@ export const Product: FC<ProductProps> = ({
 						)}
 					</div>
 
-					<div className="primary" onClick={onClickButtonBuyNow}>
+					<div
+						className={["primary", paymentEnabled ? "enabled" : "disabled"]
+							.filter(Boolean)
+							.join(" ")}
+						onClick={onClickButtonBuyNow}
+					>
 						<span>{t("pages.product.buyNow")}</span>
 					</div>
 				</div>
@@ -289,6 +310,8 @@ export const Product: FC<ProductProps> = ({
 					onClick={onClickLightbox}
 				></div>
 			)}
+
+			<>{renderPaymentOverlay}</>
 		</>
 	);
 };
