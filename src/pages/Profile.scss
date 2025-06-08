@@ -90,6 +90,10 @@
 	}
 }
 
+.container-grid-items-history {
+	overscroll-behavior: auto;
+}
+
 #container-profile-history {
 	.container-items-history {
 		display: flex;
