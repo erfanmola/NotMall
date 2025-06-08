@@ -375,6 +375,7 @@
 			caret-color: rgba(var(--text-color-rgb), 0.50);
 			font-size: 1.0625rem;
 			overflow: hidden;
+			flex-shrink: 1;
 
 			&::placeholder {
 				color: rgba(var(--text-color-rgb), 0.50);
