@@ -285,6 +285,7 @@
 		overflow: hidden;
 		border-radius: 1rem;
 		overflow: hidden;
+		margin-bottom: 0;
 
 		>div {
 			height: 100% !important;
@@ -296,12 +297,14 @@
 		flex-direction: column;
 		padding-inline: 0.5rem;
 		gap: 0.125rem;
+		margin-bottom: 0;
 
 		>div:first-child {
 			display: flex;
 			align-items: center;
 			height: 1.5rem;
 			overflow: hidden;
+			margin-bottom: 0;
 
 			>div {
 				height: 1.0625rem;
@@ -313,6 +316,7 @@
 			align-items: center;
 			height: 1.25rem;
 			overflow: hidden;
+			margin-bottom: 0;
 
 			>div {
 				height: 0.875rem;
