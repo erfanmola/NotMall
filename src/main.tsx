@@ -7,9 +7,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 createRoot(document.getElementById("root")!).render(
-	// <StrictMode>
-	<I18nProvider>
-		<App />
-	</I18nProvider>,
-	// </StrictMode>,
+	<StrictMode>
+		<I18nProvider>
+			<App />
+		</I18nProvider>
+	</StrictMode>,
 );
