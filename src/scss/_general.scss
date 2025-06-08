@@ -48,6 +48,7 @@ body,
 	position: relative;
 	min-height: max(var(--ptg-viewport-height), 100vh);
 	pointer-events: auto !important;
+	overflow: hidden;
 }
 
 body {
