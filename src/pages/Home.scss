@@ -381,7 +381,7 @@
 			flex-grow: 1;
 			caret-color: rgba(var(--text-color-rgb), 0.50);
 			font-size: 1.0625rem;
-			overflow: hidden;
+			overflow: hidden !important;
 			flex-shrink: 1;
 			padding: 0;
 			margin: 0;
