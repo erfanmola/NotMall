@@ -120,7 +120,7 @@ const Item: FC<{ item: Item }> = ({ item }) => {
 				<ImageLoader
 					ref={carouselImageRef}
 					src={item.images[activeSlide]}
-					containerAttrs={{ style: { pointerEvents: "none" } }}
+					containerAttrs={{ className: "carousel-image-ref" }}
 				/>
 
 				<header ref={headerRef}>

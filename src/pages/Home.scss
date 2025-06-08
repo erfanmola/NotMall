@@ -378,3 +378,8 @@
 		font-size: 1.125rem;
 	}
 }
+
+.carousel-image-ref {
+	pointer-events: none;
+	will-change: transform, width, height;
+}
