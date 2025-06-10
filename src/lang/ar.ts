@@ -57,6 +57,7 @@ const translation = {
 		product: {
 			inStock: "متبقي",
 			addToCart: "أضف إلى السلة",
+			outOfStock: "غير متوفر",
 			buyNow: "اشترِ الآن",
 			buyFor: "اشترِ مقابل {{price}} {{currency}}",
 			share: "هل لديك 🍆 كبير؟ تحقق من هذا!",
