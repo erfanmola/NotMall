@@ -173,7 +173,7 @@ export const Product: FC<ProductProps> = memo(
 			return (
 				<PaymentOverlay status={paymentOverlay} setStatus={setPaymentOverlay} />
 			);
-		}, [paymentOverlay]);
+		}, [paymentOverlay, t]);
 
 		const renderSwiper = useMemo(() => {
 			return (
@@ -204,6 +204,63 @@ export const Product: FC<ProductProps> = memo(
 				</Swiper>
 			);
 		}, [activeImage, standalone, item.images]);
+
+		const renderActionButtons = useMemo(() => {
+			if (item.left === 0) {
+				return (
+					<div
+						id="container-action-buttons"
+						className={`${!standalone ? "animate__animated animate__fadeIn" : ""}`}
+					>
+						<span>{t("pages.product.outOfStock")}</span>
+					</div>
+				);
+			}
+
+			return (
+				<div
+					id="container-action-buttons"
+					className={`${!standalone ? "animate__animated animate__fadeIn" : ""}`}
+				>
+					<div
+						className="secondary"
+						id="container-button-addToCart"
+						onClick={onClickButtonAddToCart}
+					>
+						{cart[item.id] ? (
+							<div>
+								<button onClick={onClickDecrement}>
+									<FaMinus />
+								</button>
+								<SlotCounter
+									autoAnimationStart={false}
+									value={cart[item.id]}
+									duration={0.125 * motionMultiplier}
+									sequentialAnimationMode
+								/>
+								<button
+									onClick={onClickIncrement}
+									disabled={cart[item.id] >= item.left}
+								>
+									<FaPlus />
+								</button>
+							</div>
+						) : (
+							<span>{t("pages.product.addToCart")}</span>
+						)}
+					</div>
+
+					<div
+						className={["primary", paymentEnabled ? "enabled" : "disabled"]
+							.filter(Boolean)
+							.join(" ")}
+						onClick={onClickButtonBuyNow}
+					>
+						<span>{t("pages.product.buyNow")}</span>
+					</div>
+				</div>
+			);
+		}, [item.left, item.id, standalone, cart, paymentEnabled, t]);
 
 		return (
 			<>
@@ -266,44 +323,7 @@ export const Product: FC<ProductProps> = memo(
 
 					<div id="container-gallery-product">{renderSwiper}</div>
 
-					<div
-						id="container-action-buttons"
-						className={`${!standalone ? "animate__animated animate__fadeIn" : ""}`}
-					>
-						<div
-							className="secondary"
-							id="container-button-addToCart"
-							onClick={onClickButtonAddToCart}
-						>
-							{cart[item.id] ? (
-								<div>
-									<button onClick={onClickDecrement}>
-										<FaMinus />
-									</button>
-									<SlotCounter
-										autoAnimationStart={false}
-										value={cart[item.id]}
-										duration={0.125 * motionMultiplier}
-										sequentialAnimationMode
-									/>
-									<button onClick={onClickIncrement}>
-										<FaPlus />
-									</button>
-								</div>
-							) : (
-								<span>{t("pages.product.addToCart")}</span>
-							)}
-						</div>
-
-						<div
-							className={["primary", paymentEnabled ? "enabled" : "disabled"]
-								.filter(Boolean)
-								.join(" ")}
-							onClick={onClickButtonBuyNow}
-						>
-							<span>{t("pages.product.buyNow")}</span>
-						</div>
-					</div>
+					<>{renderActionButtons}</>
 				</div>
 
 				{lightbox && (

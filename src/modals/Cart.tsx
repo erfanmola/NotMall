@@ -120,7 +120,7 @@ const ModalCart: FC<{
 	return (
 		<Drawer.Root open={isOpen} onOpenChange={setOpen}>
 			<Drawer.Portal>
-				<Drawer.Overlay className="vaul-overlay" />
+				<Drawer.Overlay className="vaul-overlay" style={{ zIndex: "9999" }} />
 				<Drawer.Content
 					className="vaul-content"
 					style={{ zIndex: "9999" }}

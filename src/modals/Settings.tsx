@@ -175,7 +175,10 @@ const ModalSettings: FC<{
 		<>
 			<Drawer.Root open={isOpen} onOpenChange={setOpen}>
 				<Drawer.Portal>
-					<Drawer.Overlay className="vaul-overlay" />
+					<Drawer.Overlay
+						className="vaul-overlay"
+						style={{ zIndex: "10005" }}
+					/>
 					<Drawer.Content
 						className="vaul-content"
 						style={{ zIndex: "10005" }}

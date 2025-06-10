@@ -90,7 +90,7 @@ const ModalLanguages: FC<{
 	return (
 		<Drawer.Root open={isOpen} onOpenChange={setOpen}>
 			<Drawer.Portal>
-				<Drawer.Overlay className="vaul-overlay" />
+				<Drawer.Overlay className="vaul-overlay" style={{ zIndex: "10006" }} />
 				<Drawer.Content
 					className="vaul-content"
 					style={{ zIndex: "10006" }}
