@@ -183,7 +183,7 @@ export const Product: FC<ProductProps> = memo(
 					spaceBetween={8}
 					slidesOffsetAfter={16}
 					initialSlide={activeImage}
-					className={`${!standalone ? "animate__animated animate__fadeIn" : ""}`}
+					className="animate__animated animate__fadeIn"
 				>
 					{item.images.map((image, index) => (
 						<SwiperSlide
@@ -210,7 +210,7 @@ export const Product: FC<ProductProps> = memo(
 				return (
 					<div
 						id="container-action-buttons"
-						className={`${!standalone ? "animate__animated animate__fadeIn" : ""}`}
+						className="animate__animated animate__fadeIn"
 					>
 						<span>{t("pages.product.outOfStock")}</span>
 					</div>
@@ -220,7 +220,7 @@ export const Product: FC<ProductProps> = memo(
 			return (
 				<div
 					id="container-action-buttons"
-					className={`${!standalone ? "animate__animated animate__fadeIn" : ""}`}
+					className="animate__animated animate__fadeIn"
 				>
 					<div
 						className="secondary"
@@ -270,7 +270,7 @@ export const Product: FC<ProductProps> = memo(
 					className={`${standalone ? "standalone" : "popup"}`}
 				>
 					<header
-						className={`${!standalone ? "animate__animated animate__fadeInUp" : ""}`}
+						className={`animate__animated ${!standalone ? "animate__fadeInUp" : "animate__fadeIn"}`}
 					>
 						<h1>{item.name}</h1>
 
@@ -282,13 +282,13 @@ export const Product: FC<ProductProps> = memo(
 					</header>
 
 					<p
-						className={`${!standalone ? "animate__animated animate__fadeInUp" : ""}`}
+						className={`animate__animated ${!standalone ? "animate__fadeInUp" : "animate__fadeIn"}`}
 					>
 						{item.description}
 					</p>
 
 					<ul
-						className={`${!standalone ? "animate__animated animate__fadeInUp" : ""}`}
+						className={`animate__animated ${!standalone ? "animate__fadeInUp" : "animate__fadeIn"}`}
 					>
 						<li>
 							{item.price.toLocaleString()}{" "}

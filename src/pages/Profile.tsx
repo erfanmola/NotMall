@@ -134,7 +134,9 @@ const PageProfile = () => {
 		return (
 			<section id="container-profile-history">
 				<header>
-					<h2>{t("pages.profile.history")}</h2>
+					<h2 className="animate__animated animate__fadeIn">
+						{t("pages.profile.history")}
+					</h2>
 				</header>
 
 				<VirtuosoGrid
@@ -162,7 +164,7 @@ const PageProfile = () => {
 	return (
 		<div id="container-page-profile">
 			<section>
-				<div>
+				<div className="animate__animated animate__fadeIn">
 					<div>
 						{lp.tgWebAppData?.user?.photo_url ? (
 							<ImageLoader src={lp.tgWebAppData.user.photo_url} />

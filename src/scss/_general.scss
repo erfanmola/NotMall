@@ -137,3 +137,7 @@ main {
 body>canvas {
 	z-index: 10011 !important;
 }
+
+.animate__fadeIn {
+	--animate-duration: 0.75s;
+}
