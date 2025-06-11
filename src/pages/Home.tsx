@@ -41,6 +41,7 @@ import { useTranslation } from "../i18n/i18nProvider";
 import { lottieAnimations } from "../utils/lottie";
 import { handlePayment } from "../utils/payment";
 import PaymentOverlay from "../components/PaymentOverlay";
+import { useLongPress } from "use-long-press";
 
 const Item: FC<{ item: Item }> = memo(({ item }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -50,9 +51,11 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 	const [activeSlide, setActiveSlide] = useState(
 		(item.id - 1) % item.images.length,
 	);
-	const { cart } = useCartStore();
+	const { cart, remove, increment } = useCartStore();
+	const [clickEvent, setClickEvent] = useState(true);
 
-	const onClickProduct = useCallback(() => {
+	const onClickProduct = () => {
+		if (!clickEvent) return;
 		setPortal(true);
 
 		setTimeout(() => {
@@ -81,7 +84,7 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 				ease: "none",
 			});
 		});
-	}, []);
+	};
 
 	const onCloseProduct = useCallback(() => {
 		if (!carouselImageRef.current) return;
@@ -111,12 +114,38 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 		[setActiveSlide],
 	);
 
+	const longPressHandlers = useLongPress(
+		() => {
+			setClickEvent(false);
+			invokeHapticFeedbackImpact("medium");
+			if (item.id in cart) {
+				remove(item.id.toString());
+			} else {
+				increment(item.id.toString());
+			}
+		},
+		{
+			cancelOutsideElement: true,
+			onFinish: () => {
+				setTimeout(() => {
+					setClickEvent(true);
+				});
+			},
+			onCancel: () => {
+				setTimeout(() => {
+					setClickEvent(true);
+				});
+			},
+		},
+	);
+
 	return (
 		<>
 			<div
 				className="container-item-home"
 				ref={containerRef}
 				onClick={onClickProduct}
+				{...longPressHandlers()}
 			>
 				<ImageLoader
 					ref={carouselImageRef}
