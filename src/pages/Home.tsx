@@ -31,7 +31,7 @@ import { motionMultiplier, useSettingsStore } from "../stores/useSettingsStore";
 import BottomBar from "../components/BottomBar";
 import { Pagination } from "swiper/modules";
 import { useCartStore } from "../stores/useCartStore";
-import { FaCheck } from "react-icons/fa6";
+import { FaCheck, FaExclamation } from "react-icons/fa6";
 import LottiePlayer from "../components/LottiePlayer";
 import ModalCart from "../modals/Cart";
 import { SectionError } from "./Error";
@@ -183,6 +183,12 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 				{cart[item.id] && (
 					<span className="badge-in-cart">
 						<FaCheck />
+					</span>
+				)}
+
+				{item.left === 0 && (
+					<span className="badge-out-of-stock">
+						<FaExclamation />
 					</span>
 				)}
 			</div>

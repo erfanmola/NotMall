@@ -115,7 +115,8 @@
 			touch-action: auto;
 			position: relative;
 
-			>span.badge-in-cart {
+			>span.badge-in-cart,
+			>span.badge-out-of-stock {
 				display: flex;
 				align-items: center;
 				justify-content: center;
