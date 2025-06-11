@@ -131,12 +131,12 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 			onFinish: () => {
 				setTimeout(() => {
 					setClickEvent(true);
-				});
+				}, 1e2);
 			},
 			onCancel: () => {
 				setTimeout(() => {
 					setClickEvent(true);
-				});
+				}, 1e2);
 			},
 		},
 	);
