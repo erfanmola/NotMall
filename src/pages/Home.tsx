@@ -118,6 +118,7 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 		() => {
 			setClickEvent(false);
 			invokeHapticFeedbackImpact("medium");
+			if (item.left === 0) return;
 			if (item.id in cart) {
 				remove(item.id.toString());
 			} else {
