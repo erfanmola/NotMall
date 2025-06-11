@@ -127,6 +127,7 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 		},
 		{
 			cancelOutsideElement: true,
+			cancelOnMovement: true,
 			onFinish: () => {
 				setTimeout(() => {
 					setClickEvent(true);
