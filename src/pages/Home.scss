@@ -407,5 +407,8 @@
 
 .carousel-image-ref {
 	pointer-events: none;
-	will-change: transform, width, height;
+
+	&.visible {
+		will-change: transform, width, height, max-width, min-width, max-height, min-height;
+	}
 }

@@ -80,8 +80,8 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 			const flipState = Flip.getState(carouselImageRef.current);
 			containerProductCarousel?.appendChild(carouselImageRef.current);
 			Flip.from(flipState, {
-				duration: 0.25 * motionMultiplier,
-				ease: "none",
+				duration: 0.325 * motionMultiplier,
+				ease: "circ",
 			});
 		});
 	};
@@ -93,8 +93,8 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 		containerRef.current?.appendChild(carouselImageRef.current);
 
 		Flip.from(flipState, {
-			duration: 0.25 * motionMultiplier,
-			ease: "none",
+			duration: 0.325 * motionMultiplier,
+			ease: "circ",
 		}).then(() => {
 			if (!(carouselImageRef.current && headerRef.current)) return;
 			headerRef.current.classList.remove("invisible");
