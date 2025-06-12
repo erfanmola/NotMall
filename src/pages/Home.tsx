@@ -53,6 +53,7 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 	);
 	const { cart, remove, increment } = useCartStore();
 	const [clickEvent, setClickEvent] = useState(true);
+	const { t } = useTranslation();
 
 	const onClickProduct = () => {
 		if (!clickEvent) return;
@@ -176,7 +177,13 @@ const Item: FC<{ item: Item }> = memo(({ item }) => {
 				<div>
 					<h2>{item.name}</h2>
 					<div>
-						{item.price.toLocaleString()} <span>{item.currency}</span>
+						{item.left > 0 ? (
+							<>
+								{item.price.toLocaleString()} <span>{item.currency}</span>
+							</>
+						) : (
+							<span>{t("pages.product.soldOut")}</span>
+						)}
 					</div>
 				</div>
 
