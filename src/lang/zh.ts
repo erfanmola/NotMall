@@ -57,6 +57,7 @@ const translation = {
 			inStock: "剩余",
 			addToCart: "加入购物车",
 			outOfStock: "缺货",
+			soldOut: "已售罄",
 			buyNow: "立即购买",
 			buyFor: "购买价格 {{price}} {{currency}}",
 			share: "有大 🍆？快来看看！",

@@ -58,6 +58,7 @@ const translation = {
 			inStock: "مانده",
 			addToCart: "افزودن به سبد خرید",
 			outOfStock: "ناموجود",
+			soldOut: "فروخته‌شده",
 			buyNow: "همین حالا بخر",
 			buyFor: "خرید به قیمت {{price}} {{currency}}",
 			share: "یه 🍆 بزرگ داری؟ اینو ببین!",

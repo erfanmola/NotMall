@@ -58,6 +58,7 @@ const translation = {
 			inStock: "left",
 			addToCart: "Add to cart",
 			outOfStock: "Out of stock",
+			soldOut: "Sold out",
 			buyNow: "Buy now",
 			buyFor: "Buy for {{price}} {{currency}}",
 			share: "Have a big 🍆? Check this out!",

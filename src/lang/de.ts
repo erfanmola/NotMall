@@ -59,6 +59,7 @@ const translation = {
 			inStock: "verfügbar",
 			addToCart: "In den Warenkorb",
 			outOfStock: "Nicht auf Lager",
+			soldOut: "Ausverkauft",
 			buyNow: "Jetzt kaufen",
 			buyFor: "Kaufen für {{price}} {{currency}}",
 			share: "Hast du einen großen 🍆? Schau dir das an!",
