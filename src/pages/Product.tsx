@@ -18,7 +18,7 @@ import ImageLoader from "../components/ImageLoader";
 import { IconShare } from "../components/Icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { motionMultiplier } from "../stores/useSettingsStore";
-import { Flip } from "gsap/all";
+// import { Flip } from "gsap/all";
 import {
 	ShimmerButton,
 	ShimmerText,
@@ -33,6 +33,8 @@ import { SectionError } from "./Error";
 import { useTranslation } from "../i18n/i18nProvider";
 import { handlePayment } from "../utils/payment";
 import PaymentOverlay from "../components/PaymentOverlay";
+import { Pagination } from "swiper/modules";
+import { useLongPress } from "use-long-press";
 
 type ProductProps = {
 	item: Item;
@@ -78,37 +80,37 @@ export const Product: FC<ProductProps> = memo(
 			invokeHapticFeedbackImpact("soft");
 
 			if (lightbox) {
-				const imageElement = document.querySelector(
-					"#container-lightbox > div.image-loader",
-				);
-				if (!imageElement) return;
+				// const imageElement = document.querySelector(
+				// 	"#container-lightbox > div.image-loader",
+				// );
+				// if (!imageElement) return;
 
-				const flipState = Flip.getState(imageElement);
-				document
-					.querySelector("#container-image-product")
-					?.appendChild(imageElement);
-				Flip.from(flipState, {
-					duration: 0.25 * motionMultiplier,
-					ease: "none",
-				});
+				// const flipState = Flip.getState(imageElement);
+				// document
+				// 	.querySelector("#container-image-product")
+				// 	?.appendChild(imageElement);
+				// Flip.from(flipState, {
+				// 	duration: 0.25 * motionMultiplier,
+				// 	ease: "none",
+				// });
 
 				setLightBox(false);
 			} else {
-				const imageElement = document.querySelector(
-					"#container-image-product > div.image-loader",
-				);
-				if (!imageElement) return;
+				// const imageElement = document.querySelector(
+				// 	"#container-image-product > div.image-loader",
+				// );
+				// if (!imageElement) return;
 
 				setLightBox(true);
 
-				setTimeout(() => {
-					const flipState = Flip.getState(imageElement);
-					lightboxRef.current?.appendChild(imageElement);
-					Flip.from(flipState, {
-						duration: 0.25 * motionMultiplier,
-						ease: "none",
-					});
-				});
+				// setTimeout(() => {
+				// 	const flipState = Flip.getState(imageElement);
+				// 	lightboxRef.current?.appendChild(imageElement);
+				// 	Flip.from(flipState, {
+				// 		duration: 0.25 * motionMultiplier,
+				// 		ease: "none",
+				// 	});
+				// });
 			}
 		};
 
@@ -168,6 +170,24 @@ export const Product: FC<ProductProps> = memo(
 			swiper?.slideTo(activeImage);
 		}, [activeImage]);
 
+		const onSlideChangeLightbox = useCallback(
+			(swiper: any) => {
+				setActiveImage(swiper.realIndex);
+			},
+			[setActiveImage],
+		);
+
+		const sliderItemLongPressHandlers = useLongPress(
+			(e) => {
+				(e.target as any).click();
+				setLightBox(true);
+			},
+			{
+				cancelOutsideElement: true,
+				cancelOnMovement: true,
+			},
+		);
+
 		const renderPaymentOverlay = useMemo(() => {
 			if (!paymentOverlay) return;
 			return (
@@ -188,6 +208,7 @@ export const Product: FC<ProductProps> = memo(
 					{item.images.map((image, index) => (
 						<SwiperSlide
 							key={index}
+							{...sliderItemLongPressHandlers()}
 							onClick={() => {
 								invokeHapticFeedbackImpact("light");
 								setActiveImage(index);
@@ -203,7 +224,7 @@ export const Product: FC<ProductProps> = memo(
 					))}
 				</Swiper>
 			);
-		}, [activeImage, standalone, item.images]);
+		}, [activeImage, item.images]);
 
 		const renderActionButtons = useMemo(() => {
 			if (item.left === 0) {
@@ -260,7 +281,41 @@ export const Product: FC<ProductProps> = memo(
 					</div>
 				</div>
 			);
-		}, [item.left, item.id, standalone, cart, paymentEnabled, t]);
+		}, [item.left, item.id, cart, paymentEnabled, t]);
+
+		const renderLightbox = useMemo(() => {
+			if (!lightbox) return;
+
+			return (
+				<div
+					ref={lightboxRef}
+					id="container-lightbox"
+					onClick={onClickLightbox}
+				>
+					<Swiper
+						slidesPerView={1}
+						spaceBetween={16}
+						pagination={true}
+						modules={[Pagination]}
+						initialSlide={activeImage}
+						loop
+						className="animate__animated animate__fadeIn"
+						onSlideChange={onSlideChangeLightbox}
+					>
+						{item.images.map((image, index) => (
+							<SwiperSlide key={index}>
+								<ImageLoader
+									containerAttrs={{
+										className: `${index === activeImage ? "active" : ""}`,
+									}}
+									src={image}
+								/>
+							</SwiperSlide>
+						))}
+					</Swiper>
+				</div>
+			);
+		}, [lightbox, lightboxRef, onClickLightbox, activeImage, item.images]);
 
 		return (
 			<>
@@ -317,7 +372,11 @@ export const Product: FC<ProductProps> = memo(
 						})}
 					</ul>
 
-					<div id="container-image-product" onClick={onClickLightbox}>
+					<div
+						id="container-image-product"
+						{...sliderItemLongPressHandlers()}
+						onClick={onClickLightbox}
+					>
 						{standalone && <ImageLoader src={item.images[activeImage]} />}
 					</div>
 
@@ -326,14 +385,7 @@ export const Product: FC<ProductProps> = memo(
 					<>{renderActionButtons}</>
 				</div>
 
-				{lightbox && (
-					<div
-						ref={lightboxRef}
-						id="container-lightbox"
-						onClick={onClickLightbox}
-					></div>
-				)}
-
+				<>{renderLightbox}</>
 				<>{renderPaymentOverlay}</>
 			</>
 		);

@@ -105,6 +105,7 @@
 		border-radius: 1.25rem;
 		overflow: hidden;
 		cursor: pointer;
+		position: relative;
 
 		>div {
 			border-radius: inherit;
@@ -150,16 +151,43 @@
 	align-items: center;
 	justify-content: center;
 
-	>div.image-loader {
+	.animate__fadeIn {
+		--animate-duration: 0.5s;
+	}
+
+	>div {
 		width: 100%;
 		height: auto;
 		border-radius: 1rem;
+		overflow: visible;
 
-		>img {
-			width: 100%;
-			height: auto;
+		.swiper-slide {
+			overflow: hidden;
+			border-radius: 1rem;
+		}
+
+		.swiper-wrapper {
+			display: flex;
+			align-items: center;
+		}
+
+
+		div.swiper-pagination {
+			bottom: -2rem;
+
+			.swiper-pagination-bullet {
+				background-color: var(--white);
+				border-radius: 10rem;
+				width: 0.25rem;
+				height: 0.25rem;
+			}
+
+			.swiper-pagination-bullet-active {
+				width: 1.25rem;
+			}
 		}
 	}
+
 }
 
 #container-action-buttons {
