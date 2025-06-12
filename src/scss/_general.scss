@@ -141,3 +141,9 @@ body>canvas {
 .animate__fadeIn {
 	--animate-duration: 0.75s;
 }
+
+.swiper-slide {
+	img {
+		pointer-events: none;
+	}
+}
